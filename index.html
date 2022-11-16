@@ -9,7 +9,19 @@
 </head>
 <body>
   <h1>Quiz</h1>
-  
-  <script src="/index.js"></script>
+  <div id="workspace">
+    <form>
+      <label for="input-question">Print your question:</label>
+      <input type="text" id="input-question"><br>
+      <label for="input-choises">Print choises and check the answer:</label>
+      <ul id="choices-list">
+        <il><input type="radio" name="answer"><input type="text" id="input-choice1"><br></il>
+      </ul>
+      <button type="button" id="add-choice" onclick="addChoice()">Add next choice</button><br>
+      <button type="reset" id="reset">Reset all changes</button>
+      <button type="button" id="add-question">Add question</button><br>
+    </form>
+  </div>
+  <script src="index.js"></script>
 </body>
 </html>
