@@ -1,4 +1,6 @@
 const optionsList = document.getElementById('options-list');
+const bDeleteOption = document.getElementById('delete-option');
+const bAddOption = document.getElementById('add-option');
 
 let optionCounter = 1;
 
@@ -19,17 +21,19 @@ const question1 = new Question(
 console.log(question1);
 
 const addOption = () => {
+  if (optionCounter === 1) bDeleteOption.disabled = false;
   optionCounter++;
   const item = document.createElement('li');
   item.setAttribute('id', `option-item${optionCounter}`);
   item.innerHTML = `<input type="radio" name="answer"><input type="text" id="input-option${optionCounter}"></il><br>`;
   optionsList.appendChild(item);
+  if (optionCounter === 5) bAddOption.disabled = true;
 };
 
 const deleteOption = () => {
-  if (optionCounter > 1) {
-    const item = document.getElementById(`option-item${optionCounter}`);
-    item.remove();
-    optionCounter--;
-  }
+  if (optionCounter === 5) bAddOption.disabled = false;
+  const item = document.getElementById(`option-item${optionCounter}`);
+  item.remove();
+  optionCounter--;
+  if (optionCounter === 1) bDeleteOption.disabled = true;
 };
