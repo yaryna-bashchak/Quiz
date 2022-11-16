@@ -19,9 +19,17 @@ const question1 = new Question(
 console.log(question1);
 
 const addOption = () => {
-  const item = document.createElement('li');
   optionCounter++;
+  const item = document.createElement('li');
+  item.setAttribute('id', `option-item${optionCounter}`);
   item.innerHTML = `<input type="radio" name="answer"><input type="text" id="input-option${optionCounter}"></il><br>`;
   optionsList.appendChild(item);
-  console.log('add choice');
+};
+
+const deleteOption = () => {
+  if (optionCounter > 1) {
+    const item = document.getElementById(`option-item${optionCounter}`);
+    item.remove();
+    optionCounter--;
+  }
 };

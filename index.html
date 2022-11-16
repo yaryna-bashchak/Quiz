@@ -15,9 +15,9 @@
       <input type="text" id="input-question"><br>
       <label for="input-choises">Print choises and check the answer:</label>
       <ul id="options-list">
-        <il><input type="radio" name="answer"><input type="text" id="input-option1"><br></il>
+        <il id="option-item1"><input type="radio" name="answer"><input type="text" id="input-option1"><br></il>
       </ul>
-      <button type="button" id="delete-option">Delete last option</button>
+      <button type="button" id="delete-option" onclick="deleteOption()">Delete last option</button>
       <button type="button" id="add-option" onclick="addOption()">Add next option</button><br>
       <button type="reset" id="reset">Reset all changes</button>
       <button type="button" id="add-question">Add question</button><br>
