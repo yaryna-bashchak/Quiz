@@ -21,19 +21,23 @@ const question1 = new Question(
 console.log(question1);
 
 const addOption = () => {
-  if (optionCounter === 1) bDeleteOption.disabled = false;
   optionCounter++;
   const item = document.createElement('li');
   item.setAttribute('id', `option-item${optionCounter}`);
   item.innerHTML = `<input type="radio" name="answer"><input type="text" id="input-option${optionCounter}"></il><br>`;
   optionsList.appendChild(item);
-  if (optionCounter === 5) bAddOption.disabled = true;
+  if (optionCounter > 1) bDeleteOption.disabled = false;
+  if (optionCounter >= 5) bAddOption.disabled = true;
 };
 
 const deleteOption = () => {
-  if (optionCounter === 5) bAddOption.disabled = false;
   const item = document.getElementById(`option-item${optionCounter}`);
   item.remove();
   optionCounter--;
-  if (optionCounter === 1) bDeleteOption.disabled = true;
+  if (optionCounter < 5) bAddOption.disabled = false;
+  if (optionCounter <= 1) bDeleteOption.disabled = true;
+};
+
+const deleteAllOption = () => {
+  while (optionCounter > 1) deleteOption();
 };
