@@ -29,6 +29,15 @@ class Question {
       optionsList.appendChild(item);
     }
   }
+
+  
+  checkAnswer() {
+
+  }
+
+  deleteOptions() {
+    
+  }
 }
 
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
@@ -39,7 +48,8 @@ const addOption = () => {
     optionCounter++;
     const item = document.createElement('li');
     item.setAttribute('id', `item${optionCounter}`);
-    item.innerHTML = `<input type="radio" name="answer" class="radio" value=${optionCounter}><input type="text" class="option" id="option${optionCounter}"></il><br>`;
+    item.innerHTML = `<input class="m-2 form-check-input" type="radio" name="answer" class="radio" value=${optionCounter}>
+      <input class="form-control" type="text" class="option" id="option${optionCounter}" placeholder="choice${optionCounter}"></il><br>`;
     optionsList.appendChild(item);
   }
   if (optionCounter > minCountOfOptions) bDeleteOption.disabled = false;

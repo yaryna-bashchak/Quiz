@@ -4,24 +4,33 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <title>Quiz</title>
 </head>
 <body>
   <h1>Quiz</h1>
-  <div id="workspace">
-    <form id="question-form">
-      <label for="input-question">Print your question:</label>
-      <input type="text" id="input-question"><br>
-      <label for="input-choises">Print choises and check the answer:</label>
+  <div class="workspace" id="workspace">
+    <form class="form-group" id="question-form">
+      <div>
+        <p for="input-question">Print your question:</p>
+        <input class="form-control" type="text" id="input-question" placeholder="What is 2 + 2 * 2?"><br>
+      </div>
+      <div>
+        <label for="input-choises">Print choises and check the answer:</label>
+      </div>
       <ul id="options-list">
-        <li id="item1"><input type="radio" name="answer" class="radio" value=1><input type="text" class="option" id="option1"><br></li>
+        <li id="item1">
+          <input class="m-2 form-check-input" type="radio" name="answer" class="radio" value=1>
+          <input class="form-control" type="text" class="option" id="option1" placeholder="choice1"><br></li>
       </ul>
-      <button type="button" id="delete-option" onclick="deleteOption()" disabled="true">Delete last option</button>
-      <button type="button" id="add-option" onclick="addOption()">Add next option</button><br>
-      <button type="reset" id="resetBtn" onclick="deleteAllOptions()">Reset all changes</button>
-      <button type="button" id="add-question" onclick="endQuestion()" >Add question</button><br>
-      <a href="pass_quiz.html"><button type="button">Qo to quiz</button></a>
+      <div class="buttons">
+        <button class="btn btn-primary" type="button" id="delete-option" onclick="deleteOption()" disabled="true">Delete last option</button>
+        <button class="btn btn-warning" type="button" id="add-option" onclick="addOption()">Add next option</button>
+        <button class="btn btn-info" type="reset" id="resetBtn" onclick="deleteAllOptions()">Reset all changes</button>
+        <button class="btn btn-success" type="button" id="add-question" onclick="endQuestion()" >Add question</button>
+      </div>
+        <a href="pass_quiz.html"><button class="btn" type="button">Qo to quiz</button></a>
     </form>
   </div>
   <script src="index.js"></script>
