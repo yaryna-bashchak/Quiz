@@ -1,44 +1,12 @@
 const serialize = require('serialize-javascript');
 
-const optionsList = document.getElementById('options-list');
-const btnDeleteOption = document.getElementById('delete-option');
-const btnAddOption = document.getElementById('add-option');
-const btnReset = document.getElementById('reset-btn');
-const btnAddQuestion = document.getElementById('add-question');
-const btnStartQuiz = document.getElementById('start-quiz');
-const questionParagraph = document.getElementById('question-text');
+const { elements } = require('./HTMLelements/1_create_quiz');
+const Question = require('./question');
 
 let optionCounter = 1;
 const questions = [];
 const minCountOfOptions = 1;
 const maxCountOfOptions = 5;
-
-class Question {
-  constructor(question, options, answers) {
-    this.question = question;
-    this.options = options;
-    this.answers = answers;
-  }
-
-  printQuestion() {
-    questionParagraph.textContent = `Task: ${this.question}`;
-    this.printOptions();
-  }
-
-  printOptions() {
-    for (let i = 0; i < this.options.length; i++) {
-      const item = document.createElement('li');
-      item.setAttribute('id', `item${i + 1}`);
-      item.innerHTML = `<input type="radio" name="answer" class="radio" value=${this.options[i]}><span>${this.options[i]}</span></il><br>`;
-      optionsList.appendChild(item);
-    }
-  }
-
-  checkAnswer() {}
-
-  deleteOptions() {}
-}
-
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
 questions.push(question1);
 
@@ -49,10 +17,10 @@ const addOption = () => {
     item.setAttribute('id', `item${optionCounter}`);
     item.innerHTML = `<input class="radio m-2 form-check-input" type="radio" name="answer" value=${optionCounter}>
       <input class="option form-control" type="text" id="option${optionCounter}" placeholder="choice${optionCounter}"></il><br>`;
-    optionsList.appendChild(item);
+    elements.optionsList.appendChild(item);
   }
-  if (optionCounter > minCountOfOptions) btnDeleteOption.disabled = false;
-  if (optionCounter >= maxCountOfOptions) btnAddOption.disabled = true;
+  if (optionCounter > minCountOfOptions) elements.btnDeleteOption.disabled = false;
+  if (optionCounter >= maxCountOfOptions) elements.btnAddOption.disabled = true;
 };
 
 const deleteOption = () => {
@@ -61,8 +29,8 @@ const deleteOption = () => {
     item.remove();
     optionCounter--;
   }
-  if (optionCounter < maxCountOfOptions) btnAddOption.disabled = false;
-  if (optionCounter <= minCountOfOptions) btnDeleteOption.disabled = true;
+  if (optionCounter < maxCountOfOptions) elements.btnAddOption.disabled = false;
+  if (optionCounter <= minCountOfOptions) elements.btnDeleteOption.disabled = true;
 };
 
 const deleteAllOptions = () => {
@@ -94,11 +62,11 @@ const endQuestion = () => {
 };
 
 const startQuiz = () => {
-  btnStartQuiz.hidden = true;
+  elements.btnStartQuiz.hidden = true;
   questions[0].printQuestion();
 };
 
-btnDeleteOption.onclick = deleteOption;
-btnAddOption.onclick = addOption;
-btnReset.onclick = deleteAllOptions;
-btnAddQuestion.onclick = endQuestion;
+elements.btnDeleteOption.onclick = deleteOption;
+elements.btnAddOption.onclick = addOption;
+elements.btnReset.onclick = deleteAllOptions;
+elements.btnAddQuestion.onclick = endQuestion;
