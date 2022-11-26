@@ -1,7 +1,11 @@
+const serialize = require('serialize-javascript');
+
 const optionsList = document.getElementById('options-list');
-const bDeleteOption = document.getElementById('delete-option');
-const bAddOption = document.getElementById('add-option');
-const bStartQuiz = document.getElementById('start-quiz');
+const btnDeleteOption = document.getElementById('delete-option');
+const btnAddOption = document.getElementById('add-option');
+const btnReset = document.getElementById('reset-btn');
+const btnAddQuestion = document.getElementById('add-question');
+const btnStartQuiz = document.getElementById('start-quiz');
 const questionParagraph = document.getElementById('question-text');
 
 let optionCounter = 1;
@@ -30,14 +34,9 @@ class Question {
     }
   }
 
-  
-  checkAnswer() {
+  checkAnswer() {}
 
-  }
-
-  deleteOptions() {
-    
-  }
+  deleteOptions() {}
 }
 
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
@@ -48,12 +47,12 @@ const addOption = () => {
     optionCounter++;
     const item = document.createElement('li');
     item.setAttribute('id', `item${optionCounter}`);
-    item.innerHTML = `<input class="m-2 form-check-input" type="radio" name="answer" class="radio" value=${optionCounter}>
-      <input class="form-control" type="text" class="option" id="option${optionCounter}" placeholder="choice${optionCounter}"></il><br>`;
+    item.innerHTML = `<input class="radio m-2 form-check-input" type="radio" name="answer" value=${optionCounter}>
+      <input class="option form-control" type="text" id="option${optionCounter}" placeholder="choice${optionCounter}"></il><br>`;
     optionsList.appendChild(item);
   }
-  if (optionCounter > minCountOfOptions) bDeleteOption.disabled = false;
-  if (optionCounter >= maxCountOfOptions) bAddOption.disabled = true;
+  if (optionCounter > minCountOfOptions) btnDeleteOption.disabled = false;
+  if (optionCounter >= maxCountOfOptions) btnAddOption.disabled = true;
 };
 
 const deleteOption = () => {
@@ -62,8 +61,8 @@ const deleteOption = () => {
     item.remove();
     optionCounter--;
   }
-  if (optionCounter < maxCountOfOptions) bAddOption.disabled = false;
-  if (optionCounter <= minCountOfOptions) bDeleteOption.disabled = true;
+  if (optionCounter < maxCountOfOptions) btnAddOption.disabled = false;
+  if (optionCounter <= minCountOfOptions) btnDeleteOption.disabled = true;
 };
 
 const deleteAllOptions = () => {
@@ -95,6 +94,11 @@ const endQuestion = () => {
 };
 
 const startQuiz = () => {
-  bStartQuiz.hidden = true;
+  btnStartQuiz.hidden = true;
   questions[0].printQuestion();
 };
+
+btnDeleteOption.onclick = deleteOption;
+btnAddOption.onclick = addOption;
+btnReset.onclick = deleteAllOptions;
+btnAddQuestion.onclick = endQuestion;
