@@ -1,6 +1,6 @@
 const serialize = require('serialize-javascript');
-
-const { elements } = require('./HTMLelements/1_create_quiz');
+const fs = require('browserify-fs');
+const { elements } = require('../HTMLelements/1_create_quiz');
 const Question = require('./question');
 
 let optionCounter = 1;
@@ -59,11 +59,6 @@ const endQuestion = () => {
   const form = document.getElementById('question-form');
   form.reset();
   deleteAllOptions();
-};
-
-const startQuiz = () => {
-  elements.btnStartQuiz.hidden = true;
-  questions[0].printQuestion();
 };
 
 elements.btnDeleteOption.onclick = deleteOption;

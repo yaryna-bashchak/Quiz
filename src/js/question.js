@@ -1,4 +1,4 @@
-const { elements } = require('./HTMLelements/1_create_quiz');
+const { elements } = require('../HTMLelements/1_create_quiz');
 
 module.exports = class {
   constructor(question, options, answers) {
