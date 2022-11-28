@@ -23953,7 +23953,7 @@ const getQuestionsFromFile = (fileName, array) => {
   });
 };
 
-getQuestionsFromFile('test.txt', questions);
+getQuestionsFromFile('questions.txt', questions);
 console.log(questions);
 
 const startQuiz = () => {

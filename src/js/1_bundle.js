@@ -23993,7 +23993,7 @@ const endQuestion = () => {
 
   questions.push(question);
   const text = serialize(questions);
-  setQuestionsInFile('test.txt', text);
+  setQuestionsInFile('questions.txt', text);
 
   const form = document.getElementById('question-form');
   form.reset();
