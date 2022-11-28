@@ -1,5 +1,3 @@
-const { elements } = require('../HTMLelements/1_create_quiz');
-
 module.exports = class {
   constructor(question, options, answers) {
     this.question = question;
@@ -7,17 +5,17 @@ module.exports = class {
     this.answers = answers;
   }
 
-  printQuestion() {
-    elements.questionParagraph.textContent = `Task: ${this.question}`;
-    this.printOptions();
+  printQuestion(paragraph, list) {
+    paragraph.textContent = `Task: ${this.question}`;
+    this.printOptions(list);
   }
 
-  printOptions() {
+  printOptions(list) {
     for (let i = 0; i < this.options.length; i++) {
       const item = document.createElement('li');
       item.setAttribute('id', `item${i + 1}`);
       item.innerHTML = `<input type="radio" name="answer" class="radio" value=${this.options[i]}><span>${this.options[i]}</span></il><br>`;
-      elements.optionsList.appendChild(item);
+      list.appendChild(item);
     }
   }
 

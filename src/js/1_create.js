@@ -19,6 +19,8 @@ const maxCountOfOptions = 5;
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
 questions.push(question1);
 
+// event listeners
+
 const addOption = () => {
   if (optionCounter < maxCountOfOptions) {
     optionCounter++;

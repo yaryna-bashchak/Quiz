@@ -23919,53 +23919,47 @@ function wrappy (fn, cb) {
 },{}],164:[function(require,module,exports){
 exports.elements = {
   optionsList: document.getElementById('options-list'),
-  btnDeleteOption: document.getElementById('delete-option'),
-  btnAddOption: document.getElementById('add-option'),
-  btnReset: document.getElementById('reset-btn'),
-  btnAddQuestion: document.getElementById('add-question'),
-};
-
-},{}],165:[function(require,module,exports){
-exports.elements = {
-  optionsList: document.getElementById('options-list'),
   btnStartQuiz: document.getElementById('start-quiz'),
   questionParagraph: document.getElementById('question-text'),
 };
 
-},{}],166:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
 const Question = require('./question');
 
-const questions = [];
-
 // eslint-disable-next-line no-eval
 const deserialize = (text) => eval(`(${text})`);
 
-const getQuestionsFromFile = (fileName, array) => {
-  fs.readFile(fileName, 'utf8', (error, data) => {
+const getQuestionsFromFile = async (fileName) => {
+  const array = [];
+  await fs.readFile(fileName, 'utf8', (error, data) => {
     const deserializedData = deserialize(data);
-    deserializedData.forEach(elem => {
+    deserializedData.forEach((elem) => {
       const question = new Question(elem.question, elem.options, elem.answers);
       array.push(question);
     });
   });
+
+  return array;
 };
 
-getQuestionsFromFile('questions.txt', questions);
-console.log(questions);
+let questions = [];
+(async () => {
+  questions = await getQuestionsFromFile('questions.txt');
+})();
+
+// event listeners
 
 const startQuiz = () => {
   elements.btnStartQuiz.hidden = true;
-  questions[0].printQuestion();
+  questions[0].printQuestion(elements.questionParagraph, elements.optionsList);
 };
 
 elements.btnStartQuiz.onclick = startQuiz;
 
-},{"../HTMLelements/2_pass_quiz":165,"./question":167,"browserify-fs":62,"serialize-javascript":158}],167:[function(require,module,exports){
-const { elements } = require('../HTMLelements/1_create_quiz');
-
+},{"../HTMLelements/2_pass_quiz":164,"./question":166,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
 module.exports = class {
   constructor(question, options, answers) {
     this.question = question;
@@ -23973,17 +23967,17 @@ module.exports = class {
     this.answers = answers;
   }
 
-  printQuestion() {
-    elements.questionParagraph.textContent = `Task: ${this.question}`;
-    this.printOptions();
+  printQuestion(paragraph, list) {
+    paragraph.textContent = `Task: ${this.question}`;
+    this.printOptions(list);
   }
 
-  printOptions() {
+  printOptions(list) {
     for (let i = 0; i < this.options.length; i++) {
       const item = document.createElement('li');
       item.setAttribute('id', `item${i + 1}`);
       item.innerHTML = `<input type="radio" name="answer" class="radio" value=${this.options[i]}><span>${this.options[i]}</span></il><br>`;
-      elements.optionsList.appendChild(item);
+      list.appendChild(item);
     }
   }
 
@@ -23992,4 +23986,4 @@ module.exports = class {
   deleteOptions() {}
 };
 
-},{"../HTMLelements/1_create_quiz":164}]},{},[166]);
+},{}]},{},[165]);
