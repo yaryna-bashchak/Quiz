@@ -23970,11 +23970,19 @@ const nextQuestion = () => {
     currentQuestion++;
     questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
+  if (currentQuestion + 1 >= questions.length) elements.btnNextQuestion.disabled = true;
+  if (currentQuestion + 1 > 1) elements.btnPrevQuestion.disabled = false;
 };
 
 const prevQuestion = () => {
-  
-}
+  if (currentQuestion > 0) {
+    questions[currentQuestion].deleteOptions();
+    currentQuestion--;
+    questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+  }
+  if (currentQuestion + 1 < questions.length) elements.btnNextQuestion.disabled = false;
+  if (currentQuestion + 1 <= 1) elements.btnPrevQuestion.disabled = true;
+};
 
 elements.btnStartQuiz.onclick = startQuiz;
 elements.btnNextQuestion.onclick = nextQuestion;
