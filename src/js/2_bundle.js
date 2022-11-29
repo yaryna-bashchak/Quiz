@@ -23932,7 +23932,9 @@ const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
 const Question = require('./question');
 
+// values
 let currentQuestion = 0;
+let questions = [];
 
 // eslint-disable-next-line no-eval
 const deserialize = (text) => eval(`(${text})`);
@@ -23950,7 +23952,10 @@ const getQuestionsFromFile = async (fileName) => {
   return array;
 };
 
-let questions = [];
+const updateCounterParagraph = (paragraph, count, current) => {
+  paragraph.textContent = `Question ${current + 1} of ${count}`;
+};
+
 (async () => {
   questions = await getQuestionsFromFile('questions.txt');
 })();
@@ -23958,6 +23963,7 @@ let questions = [];
 // event listeners
 
 const startQuiz = () => {
+  updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
   elements.btnStartQuiz.hidden = true;
   elements.btnPrevQuestion.hidden = false;
   elements.btnNextQuestion.hidden = false;
@@ -23969,6 +23975,7 @@ const nextQuestion = () => {
   if (currentQuestion + 1 < questions.length) {
     questions[currentQuestion].deleteOptions();
     currentQuestion++;
+    updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
     questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
   if (currentQuestion + 1 >= questions.length) elements.btnNextQuestion.disabled = true;
@@ -23980,6 +23987,7 @@ const prevQuestion = () => {
   if (currentQuestion > 0) {
     questions[currentQuestion].deleteOptions();
     currentQuestion--;
+    updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
     questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
   if (currentQuestion + 1 < questions.length) elements.btnNextQuestion.disabled = false;
