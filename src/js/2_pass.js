@@ -36,6 +36,7 @@ const startQuiz = () => {
 };
 
 const nextQuestion = () => {
+  questions[currentQuestion].rememberAnswer(elements.optionsList);
   if (currentQuestion + 1 < questions.length) {
     questions[currentQuestion].deleteOptions();
     currentQuestion++;
@@ -46,6 +47,7 @@ const nextQuestion = () => {
 };
 
 const prevQuestion = () => {
+  questions[currentQuestion].rememberAnswer(elements.optionsList);
   if (currentQuestion > 0) {
     questions[currentQuestion].deleteOptions();
     currentQuestion--;

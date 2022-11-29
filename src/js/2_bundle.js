@@ -23965,6 +23965,7 @@ const startQuiz = () => {
 };
 
 const nextQuestion = () => {
+  questions[currentQuestion].rememberAnswer(elements.optionsList);
   if (currentQuestion + 1 < questions.length) {
     questions[currentQuestion].deleteOptions();
     currentQuestion++;
@@ -23975,6 +23976,7 @@ const nextQuestion = () => {
 };
 
 const prevQuestion = () => {
+  questions[currentQuestion].rememberAnswer(elements.optionsList);
   if (currentQuestion > 0) {
     questions[currentQuestion].deleteOptions();
     currentQuestion--;
@@ -23994,6 +23996,7 @@ module.exports = class {
     this.question = question;
     this.options = options;
     this.answers = answers;
+    this.selected = [];
   }
 
   printQuestion(paragraph, list) {
@@ -24005,14 +24008,24 @@ module.exports = class {
     for (let i = 0; i < this.options.length; i++) {
       const item = document.createElement('li');
       item.setAttribute('id', `item${i + 1}`);
+      const isSelected = this.selected.some((x) => x === this.options[i]);
       item.innerHTML = `
-        <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]}>
+        <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
         <label class="form-check-label">${this.options[i]}</label></il><br>`;
       list.appendChild(item);
     }
   }
 
-  checkAnswer() {}
+  rememberAnswer(list) {
+    const radioElements = list.querySelectorAll('.radio');
+    this.selected = [];
+    for (let i = 0; i < this.options.length; i++) {
+      if (radioElements[i].checked) this.selected.push(this.options[i]);
+    }
+    console.log(this);
+  }
+
+  checkAnswers() {}
 
   deleteOptions() {
     let countOfOptions = this.options.length;
