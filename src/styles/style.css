@@ -11,6 +11,10 @@ ul > li {
   margin: 5px 0;
 }
 
+#options-list > li {
+  justify-content: flex-start;
+}
+
 body {
   margin: 20px auto;
   text-align: center;

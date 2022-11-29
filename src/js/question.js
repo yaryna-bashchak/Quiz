@@ -14,7 +14,9 @@ module.exports = class {
     for (let i = 0; i < this.options.length; i++) {
       const item = document.createElement('li');
       item.setAttribute('id', `item${i + 1}`);
-      item.innerHTML = `<input type="radio" name="answer" class="radio" value=${this.options[i]}><span>${this.options[i]}</span></il><br>`;
+      item.innerHTML = `
+        <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]}>
+        <label class="form-check-label">${this.options[i]}</label></il><br>`;
       list.appendChild(item);
     }
   }
