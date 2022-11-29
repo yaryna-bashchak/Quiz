@@ -15,8 +15,13 @@
       <p id="count-of-questions"></p>
       <p class="lead" id="question-text"></p>
       <ul id="options-list"></ul>
-      <button type="button" id="start-quiz">Start Quiz</button><br>
-      <a href="1_create_quiz.html"><button type="button">Go back to creating</button></a>
+      <div class="buttons">
+        <button class="btn btn-outline-warning" type="button" id="prev-question" hidden="true">Previous</button>
+        <button class="btn btn-ontline-info" type="button" id="next-question" hidden="true">Next</button>
+        <button class="btn fill-full-line-grid btn-success" type="button" id="start-quiz">Start Quiz</button>
+        <a class="fill-full-line-grid" href="1_create_quiz.html"><button class="btn" type="button">Go back to
+            creating</button></a>
+      </div>
     </form>
   </div>
   <script src="../src/js/2_bundle.js"></script>

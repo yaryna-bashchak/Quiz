@@ -4,14 +4,14 @@ ul {
   padding: 0;
 }
 
-ul > li {
+ul>li {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 5px 0;
 }
 
-#options-list > li {
+#options-list>li {
   justify-content: flex-start;
 }
 
@@ -37,4 +37,8 @@ button {
 .buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.fill-full-line-grid {
+  grid-column: 1 / -1;
 }
