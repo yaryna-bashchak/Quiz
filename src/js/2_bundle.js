@@ -23918,9 +23918,12 @@ function wrappy (fn, cb) {
 
 },{}],164:[function(require,module,exports){
 exports.elements = {
+  counterParagraph: document.getElementById('count-of-questions'),
+  questionParagraph: document.getElementById('question-text'),
   optionsList: document.getElementById('options-list'),
   btnStartQuiz: document.getElementById('start-quiz'),
-  questionParagraph: document.getElementById('question-text'),
+  btnPrevQuestion: document.getElementById('prev-question'),
+  btnNextQuestion: document.getElementById('next-question'),
 };
 
 },{}],165:[function(require,module,exports){
@@ -23928,6 +23931,8 @@ const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
 const Question = require('./question');
+
+let currentQuestion = 0;
 
 // eslint-disable-next-line no-eval
 const deserialize = (text) => eval(`(${text})`);
@@ -23954,10 +23959,26 @@ let questions = [];
 
 const startQuiz = () => {
   elements.btnStartQuiz.hidden = true;
-  questions[0].printQuestion(elements.questionParagraph, elements.optionsList);
+  elements.btnPrevQuestion.hidden = false;
+  elements.btnNextQuestion.hidden = false;
+  questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
 };
 
+const nextQuestion = () => {
+  if (currentQuestion + 1 < questions.length) {
+    questions[currentQuestion].deleteOptions();
+    currentQuestion++;
+    questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+  }
+};
+
+const prevQuestion = () => {
+  
+}
+
 elements.btnStartQuiz.onclick = startQuiz;
+elements.btnNextQuestion.onclick = nextQuestion;
+elements.btnPrevQuestion.onclick = prevQuestion;
 
 },{"../HTMLelements/2_pass_quiz":164,"./question":166,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
 module.exports = class {
@@ -23985,7 +24006,14 @@ module.exports = class {
 
   checkAnswer() {}
 
-  deleteOptions() {}
+  deleteOptions() {
+    let countOfOptions = this.options.length;
+    while (countOfOptions > 0) {
+      const item = document.getElementById(`item${countOfOptions}`);
+      item.remove();
+      countOfOptions--;
+    }
+  }
 };
 
 },{}]},{},[165]);

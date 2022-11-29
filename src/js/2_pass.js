@@ -3,6 +3,8 @@ const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
 const Question = require('./question');
 
+let currentQuestion = 0;
+
 // eslint-disable-next-line no-eval
 const deserialize = (text) => eval(`(${text})`);
 
@@ -28,7 +30,23 @@ let questions = [];
 
 const startQuiz = () => {
   elements.btnStartQuiz.hidden = true;
-  questions[0].printQuestion(elements.questionParagraph, elements.optionsList);
+  elements.btnPrevQuestion.hidden = false;
+  elements.btnNextQuestion.hidden = false;
+  questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
 };
 
+const nextQuestion = () => {
+  if (currentQuestion + 1 < questions.length) {
+    questions[currentQuestion].deleteOptions();
+    currentQuestion++;
+    questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+  }
+};
+
+const prevQuestion = () => {
+  
+}
+
 elements.btnStartQuiz.onclick = startQuiz;
+elements.btnNextQuestion.onclick = nextQuestion;
+elements.btnPrevQuestion.onclick = prevQuestion;

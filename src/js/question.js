@@ -23,5 +23,12 @@ module.exports = class {
 
   checkAnswer() {}
 
-  deleteOptions() {}
+  deleteOptions() {
+    let countOfOptions = this.options.length;
+    while (countOfOptions > 0) {
+      const item = document.getElementById(`item${countOfOptions}`);
+      item.remove();
+      countOfOptions--;
+    }
+  }
 };
