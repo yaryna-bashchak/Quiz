@@ -9453,8 +9453,8 @@ module.exports.AbstractLevelDOWN    = AbstractLevelDOWN
 module.exports.AbstractIterator     = AbstractIterator
 module.exports.AbstractChainedBatch = AbstractChainedBatch
 
-}).call(this)}).call(this,{"isBuffer":require("../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")},require('_process'))
-},{"../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20,"./abstract-chained-batch":49,"./abstract-iterator":50,"_process":25,"xtend":52}],52:[function(require,module,exports){
+}).call(this)}).call(this,{"isBuffer":require("../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")},require('_process'))
+},{"../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20,"./abstract-chained-batch":49,"./abstract-iterator":50,"_process":25,"xtend":52}],52:[function(require,module,exports){
 module.exports = extend
 
 function extend() {
@@ -12200,8 +12200,8 @@ DeferredLevelDOWN.prototype._iterator = function () {
 
 module.exports = DeferredLevelDOWN
 
-}).call(this)}).call(this,{"isBuffer":require("../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")},require('_process'))
-},{"../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20,"_process":25,"abstract-leveldown":51,"util":47}],68:[function(require,module,exports){
+}).call(this)}).call(this,{"isBuffer":require("../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")},require('_process'))
+},{"../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20,"_process":25,"abstract-leveldown":51,"util":47}],68:[function(require,module,exports){
 var prr = require('prr')
 
 function init (type, message, cause) {
@@ -20384,8 +20384,8 @@ exports.filter = function (range, compare) {
 
 
 
-}).call(this)}).call(this,{"isBuffer":require("../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20}],141:[function(require,module,exports){
+}).call(this)}).call(this,{"isBuffer":require("../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")})
+},{"../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20}],141:[function(require,module,exports){
 module.exports = function (num, base) {
   return parseInt(num.toString(), base || 8)
 }
@@ -23924,6 +23924,7 @@ exports.elements = {
   btnStartQuiz: document.getElementById('start-quiz'),
   btnPrevQuestion: document.getElementById('prev-question'),
   btnNextQuestion: document.getElementById('next-question'),
+  btnFinishQuiz: document.getElementById('finish-quiz'),
 };
 
 },{}],165:[function(require,module,exports){
@@ -23935,6 +23936,7 @@ const Question = require('./question');
 // values
 let currentQuestion = 0;
 let questions = [];
+let score;
 
 // eslint-disable-next-line no-eval
 const deserialize = (text) => eval(`(${text})`);
@@ -23966,37 +23968,64 @@ const startQuiz = () => {
   updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
   elements.btnStartQuiz.hidden = true;
   elements.btnPrevQuestion.hidden = false;
-  elements.btnNextQuestion.hidden = false;
+
+  if (questions.length > 1) elements.btnNextQuestion.hidden = false;
+  else elements.btnFinishQuiz.hidden = false;
+
   questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
 };
 
 const nextQuestion = () => {
   questions[currentQuestion].rememberAnswer(elements.optionsList);
+
   if (currentQuestion + 1 < questions.length) {
     questions[currentQuestion].deleteOptions();
     currentQuestion++;
     updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
     questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
-  if (currentQuestion + 1 >= questions.length) elements.btnNextQuestion.disabled = true;
+
+  if (currentQuestion + 1 >= questions.length) {
+    elements.btnNextQuestion.hidden = true;
+    elements.btnFinishQuiz.hidden = false;
+  }
+
   if (currentQuestion + 1 > 1) elements.btnPrevQuestion.disabled = false;
 };
 
 const prevQuestion = () => {
   questions[currentQuestion].rememberAnswer(elements.optionsList);
+
   if (currentQuestion > 0) {
     questions[currentQuestion].deleteOptions();
     currentQuestion--;
     updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
     questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
-  if (currentQuestion + 1 < questions.length) elements.btnNextQuestion.disabled = false;
+
+  if (currentQuestion + 1 < questions.length) {
+    elements.btnFinishQuiz.hidden = true;
+    elements.btnNextQuestion.hidden = false;
+  }
+
   if (currentQuestion + 1 <= 1) elements.btnPrevQuestion.disabled = true;
+};
+
+const finishQuiz = () => {
+  score = 0;
+  questions[currentQuestion].rememberAnswer(elements.optionsList);
+
+  for (let i = 0; i < questions.length; i++) {
+    score += questions[i].checkAnswers();
+  }
+
+  console.log(score);
 };
 
 elements.btnStartQuiz.onclick = startQuiz;
 elements.btnNextQuestion.onclick = nextQuestion;
 elements.btnPrevQuestion.onclick = prevQuestion;
+elements.btnFinishQuiz.onclick = finishQuiz;
 
 },{"../HTMLelements/2_pass_quiz":164,"./question":166,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
 module.exports = class {
@@ -24033,7 +24062,16 @@ module.exports = class {
     console.log(this);
   }
 
-  checkAnswers() {}
+  checkAnswers() {
+    let rightAnswers = 0;
+    let wrongAnswers = 0;
+    for (let i = 0; i < this.selected.length; i++) {
+      if (this.answers.includes(this.selected[i])) rightAnswers++;
+      else wrongAnswers++;
+    }
+    const score = rightAnswers / (this.answers.length + wrongAnswers);
+    return score;
+  }
 
   deleteOptions() {
     let countOfOptions = this.options.length;

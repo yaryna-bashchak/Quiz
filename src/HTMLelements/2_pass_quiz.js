@@ -5,4 +5,5 @@ exports.elements = {
   btnStartQuiz: document.getElementById('start-quiz'),
   btnPrevQuestion: document.getElementById('prev-question'),
   btnNextQuestion: document.getElementById('next-question'),
+  btnFinishQuiz: document.getElementById('finish-quiz'),
 };

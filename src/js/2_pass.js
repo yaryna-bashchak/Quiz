@@ -6,6 +6,7 @@ const Question = require('./question');
 // values
 let currentQuestion = 0;
 let questions = [];
+let score;
 
 // eslint-disable-next-line no-eval
 const deserialize = (text) => eval(`(${text})`);
@@ -37,34 +38,61 @@ const startQuiz = () => {
   updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
   elements.btnStartQuiz.hidden = true;
   elements.btnPrevQuestion.hidden = false;
-  elements.btnNextQuestion.hidden = false;
+
+  if (questions.length > 1) elements.btnNextQuestion.hidden = false;
+  else elements.btnFinishQuiz.hidden = false;
+
   questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
 };
 
 const nextQuestion = () => {
   questions[currentQuestion].rememberAnswer(elements.optionsList);
+
   if (currentQuestion + 1 < questions.length) {
     questions[currentQuestion].deleteOptions();
     currentQuestion++;
     updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
     questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
-  if (currentQuestion + 1 >= questions.length) elements.btnNextQuestion.disabled = true;
+
+  if (currentQuestion + 1 >= questions.length) {
+    elements.btnNextQuestion.hidden = true;
+    elements.btnFinishQuiz.hidden = false;
+  }
+
   if (currentQuestion + 1 > 1) elements.btnPrevQuestion.disabled = false;
 };
 
 const prevQuestion = () => {
   questions[currentQuestion].rememberAnswer(elements.optionsList);
+
   if (currentQuestion > 0) {
     questions[currentQuestion].deleteOptions();
     currentQuestion--;
     updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
     questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
-  if (currentQuestion + 1 < questions.length) elements.btnNextQuestion.disabled = false;
+
+  if (currentQuestion + 1 < questions.length) {
+    elements.btnFinishQuiz.hidden = true;
+    elements.btnNextQuestion.hidden = false;
+  }
+
   if (currentQuestion + 1 <= 1) elements.btnPrevQuestion.disabled = true;
+};
+
+const finishQuiz = () => {
+  score = 0;
+  questions[currentQuestion].rememberAnswer(elements.optionsList);
+
+  for (let i = 0; i < questions.length; i++) {
+    score += questions[i].checkAnswers();
+  }
+
+  console.log(score);
 };
 
 elements.btnStartQuiz.onclick = startQuiz;
 elements.btnNextQuestion.onclick = nextQuestion;
 elements.btnPrevQuestion.onclick = prevQuestion;
+elements.btnFinishQuiz.onclick = finishQuiz;
