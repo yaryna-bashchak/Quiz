@@ -1,4 +1,3 @@
-const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
 const Question = require('./question');
@@ -24,13 +23,19 @@ const getQuestionsFromFile = async (fileName) => {
   return array;
 };
 
-const updateCounterParagraph = (paragraph, count, current) => {
-  paragraph.textContent = `Question ${current + 1} of ${count}`;
-};
-
 (async () => {
   questions = await getQuestionsFromFile('questions.txt');
 })();
+
+const updateCounterParagraph = (paragraph, count = 0, current = 0) => {
+  if (count === 0 && current === 0) paragraph.textContent = '';
+  else paragraph.textContent = `Question ${current + 1} of ${count}`;
+};
+
+const printScore = (paragraph, clear = false) => {
+  if (clear) paragraph.textContent = '';
+  else paragraph.textContent = `Your score: ${score} of ${questions.length}`;
+};
 
 // event listeners
 

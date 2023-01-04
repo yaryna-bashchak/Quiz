@@ -42,3 +42,7 @@ button {
 .fill-full-line-grid {
   grid-column: 1 / -1;
 }
+
+.lead-bigger {
+  font-size: xx-large;
+}

@@ -12041,7 +12041,7 @@ function u8Concat (parts) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":4,"buffer-from":63,"inherits":83,"readable-stream":156,"typedarray":161}],66:[function(require,module,exports){
+},{"buffer":4,"buffer-from":63,"inherits":83,"readable-stream":155,"typedarray":158}],66:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -18043,7 +18043,7 @@ module.exports = function (db) {
   }
 }
 
-},{"string-range":159}],106:[function(require,module,exports){
+},{"string-range":156}],106:[function(require,module,exports){
 (function (Buffer){(function (){
 module.exports = Level
 
@@ -18221,7 +18221,7 @@ var checkKeyValue = Level.prototype._checkKeyValue = function (obj, type) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./iterator":107,"abstract-leveldown":51,"buffer":4,"idb-wrapper":82,"isbuffer":86,"typedarray-to-buffer":160,"util":47,"xtend":113}],107:[function(require,module,exports){
+},{"./iterator":107,"abstract-leveldown":51,"buffer":4,"idb-wrapper":82,"isbuffer":86,"typedarray-to-buffer":157,"util":47,"xtend":113}],107:[function(require,module,exports){
 var util = require('util')
 var AbstractIterator  = require('abstract-leveldown').AbstractIterator
 var ltgt = require('ltgt')
@@ -19020,7 +19020,7 @@ SDB.post = function (range, hook) {
 var exports = module.exports = SubDB
 
 
-},{"./batch":115,"events":7,"level-fix-range":117,"string-range":159,"util":47,"xtend":121}],123:[function(require,module,exports){
+},{"./batch":115,"events":7,"level-fix-range":117,"string-range":156,"util":47,"xtend":121}],123:[function(require,module,exports){
 /* Copyright (c) 2012-2014 LevelUP contributors
  * See list at <https://github.com/rvagg/node-levelup#contributing>
  * MIT License
@@ -20434,7 +20434,7 @@ function onceStrict (fn) {
   return f
 }
 
-},{"wrappy":163}],143:[function(require,module,exports){
+},{"wrappy":160}],143:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -20486,60 +20486,6 @@ function nextTick(fn, arg1, arg2, arg3) {
 },{"_process":25}],144:[function(require,module,exports){
 arguments[4][130][0].apply(exports,arguments)
 },{"dup":130}],145:[function(require,module,exports){
-(function (process,global){(function (){
-'use strict'
-
-// limit of Crypto.getRandomValues()
-// https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
-var MAX_BYTES = 65536
-
-// Node supports requesting up to this number of bytes
-// https://github.com/nodejs/node/blob/master/lib/internal/crypto/random.js#L48
-var MAX_UINT32 = 4294967295
-
-function oldBrowser () {
-  throw new Error('Secure random number generation is not supported by this browser.\nUse Chrome, Firefox or Internet Explorer 11')
-}
-
-var Buffer = require('safe-buffer').Buffer
-var crypto = global.crypto || global.msCrypto
-
-if (crypto && crypto.getRandomValues) {
-  module.exports = randomBytes
-} else {
-  module.exports = oldBrowser
-}
-
-function randomBytes (size, cb) {
-  // phantomjs needs to throw
-  if (size > MAX_UINT32) throw new RangeError('requested too many random bytes')
-
-  var bytes = Buffer.allocUnsafe(size)
-
-  if (size > 0) {  // getRandomValues fails on IE if size == 0
-    if (size > MAX_BYTES) { // this is the max bytes crypto.getRandomValues
-      // can do at once see https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues
-      for (var generated = 0; generated < size; generated += MAX_BYTES) {
-        // buffer.slice automatically checks if the end is past the end of
-        // the buffer so we don't have to here
-        crypto.getRandomValues(bytes.slice(generated, generated + MAX_BYTES))
-      }
-    } else {
-      crypto.getRandomValues(bytes)
-    }
-  }
-
-  if (typeof cb === 'function') {
-    return process.nextTick(function () {
-      cb(null, bytes)
-    })
-  }
-
-  return bytes
-}
-
-}).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":25,"safe-buffer":157}],146:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -20671,7 +20617,7 @@ Duplex.prototype._destroy = function (err, cb) {
 
   pna.nextTick(cb, err);
 };
-},{"./_stream_readable":148,"./_stream_writable":150,"core-util-is":66,"inherits":83,"process-nextick-args":143}],147:[function(require,module,exports){
+},{"./_stream_readable":147,"./_stream_writable":149,"core-util-is":66,"inherits":83,"process-nextick-args":143}],146:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -20719,7 +20665,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":149,"core-util-is":66,"inherits":83}],148:[function(require,module,exports){
+},{"./_stream_transform":148,"core-util-is":66,"inherits":83}],147:[function(require,module,exports){
 (function (process,global){(function (){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -21741,7 +21687,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":146,"./internal/streams/BufferList":151,"./internal/streams/destroy":152,"./internal/streams/stream":153,"_process":25,"core-util-is":66,"events":7,"inherits":83,"isarray":85,"process-nextick-args":143,"safe-buffer":154,"string_decoder/":155,"util":3}],149:[function(require,module,exports){
+},{"./_stream_duplex":145,"./internal/streams/BufferList":150,"./internal/streams/destroy":151,"./internal/streams/stream":152,"_process":25,"core-util-is":66,"events":7,"inherits":83,"isarray":85,"process-nextick-args":143,"safe-buffer":153,"string_decoder/":154,"util":3}],148:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21956,7 +21902,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":146,"core-util-is":66,"inherits":83}],150:[function(require,module,exports){
+},{"./_stream_duplex":145,"core-util-is":66,"inherits":83}],149:[function(require,module,exports){
 (function (process,global,setImmediate){(function (){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -22646,7 +22592,7 @@ Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"./_stream_duplex":146,"./internal/streams/destroy":152,"./internal/streams/stream":153,"_process":25,"core-util-is":66,"inherits":83,"process-nextick-args":143,"safe-buffer":154,"timers":43,"util-deprecate":162}],151:[function(require,module,exports){
+},{"./_stream_duplex":145,"./internal/streams/destroy":151,"./internal/streams/stream":152,"_process":25,"core-util-is":66,"inherits":83,"process-nextick-args":143,"safe-buffer":153,"timers":43,"util-deprecate":159}],150:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22726,7 +22672,7 @@ if (util && util.inspect && util.inspect.custom) {
     return this.constructor.name + ' ' + obj;
   };
 }
-},{"safe-buffer":154,"util":3}],152:[function(require,module,exports){
+},{"safe-buffer":153,"util":3}],151:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -22801,9 +22747,9 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":143}],153:[function(require,module,exports){
+},{"process-nextick-args":143}],152:[function(require,module,exports){
 arguments[4][41][0].apply(exports,arguments)
-},{"dup":41,"events":7}],154:[function(require,module,exports){
+},{"dup":41,"events":7}],153:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -22867,9 +22813,9 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":4}],155:[function(require,module,exports){
+},{"buffer":4}],154:[function(require,module,exports){
 arguments[4][42][0].apply(exports,arguments)
-},{"dup":42,"safe-buffer":154}],156:[function(require,module,exports){
+},{"dup":42,"safe-buffer":153}],155:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -22878,279 +22824,7 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":146,"./lib/_stream_passthrough.js":147,"./lib/_stream_readable.js":148,"./lib/_stream_transform.js":149,"./lib/_stream_writable.js":150}],157:[function(require,module,exports){
-arguments[4][26][0].apply(exports,arguments)
-},{"buffer":4,"dup":26}],158:[function(require,module,exports){
-/*
-Copyright (c) 2014, Yahoo! Inc. All rights reserved.
-Copyrights licensed under the New BSD License.
-See the accompanying LICENSE file for terms.
-*/
-
-'use strict';
-
-var randomBytes = require('randombytes');
-
-// Generate an internal UID to make the regexp pattern harder to guess.
-var UID_LENGTH          = 16;
-var UID                 = generateUID();
-var PLACE_HOLDER_REGEXP = new RegExp('(\\\\)?"@__(F|R|D|M|S|A|U|I|B|L)-' + UID + '-(\\d+)__@"', 'g');
-
-var IS_NATIVE_CODE_REGEXP = /\{\s*\[native code\]\s*\}/g;
-var IS_PURE_FUNCTION = /function.*?\(/;
-var IS_ARROW_FUNCTION = /.*?=>.*?/;
-var UNSAFE_CHARS_REGEXP   = /[<>\/\u2028\u2029]/g;
-
-var RESERVED_SYMBOLS = ['*', 'async'];
-
-// Mapping of unsafe HTML and invalid JavaScript line terminator chars to their
-// Unicode char counterparts which are safe to use in JavaScript strings.
-var ESCAPED_CHARS = {
-    '<'     : '\\u003C',
-    '>'     : '\\u003E',
-    '/'     : '\\u002F',
-    '\u2028': '\\u2028',
-    '\u2029': '\\u2029'
-};
-
-function escapeUnsafeChars(unsafeChar) {
-    return ESCAPED_CHARS[unsafeChar];
-}
-
-function generateUID() {
-    var bytes = randomBytes(UID_LENGTH);
-    var result = '';
-    for(var i=0; i<UID_LENGTH; ++i) {
-        result += bytes[i].toString(16);
-    }
-    return result;
-}
-
-function deleteFunctions(obj){
-    var functionKeys = [];
-    for (var key in obj) {
-        if (typeof obj[key] === "function") {
-            functionKeys.push(key);
-        }
-    }
-    for (var i = 0; i < functionKeys.length; i++) {
-        delete obj[functionKeys[i]];
-    }
-}
-
-module.exports = function serialize(obj, options) {
-    options || (options = {});
-
-    // Backwards-compatibility for `space` as the second argument.
-    if (typeof options === 'number' || typeof options === 'string') {
-        options = {space: options};
-    }
-
-    var functions = [];
-    var regexps   = [];
-    var dates     = [];
-    var maps      = [];
-    var sets      = [];
-    var arrays    = [];
-    var undefs    = [];
-    var infinities= [];
-    var bigInts = [];
-    var urls = [];
-
-    // Returns placeholders for functions and regexps (identified by index)
-    // which are later replaced by their string representation.
-    function replacer(key, value) {
-
-        // For nested function
-        if(options.ignoreFunction){
-            deleteFunctions(value);
-        }
-
-        if (!value && value !== undefined) {
-            return value;
-        }
-
-        // If the value is an object w/ a toJSON method, toJSON is called before
-        // the replacer runs, so we use this[key] to get the non-toJSONed value.
-        var origValue = this[key];
-        var type = typeof origValue;
-
-        if (type === 'object') {
-            if(origValue instanceof RegExp) {
-                return '@__R-' + UID + '-' + (regexps.push(origValue) - 1) + '__@';
-            }
-
-            if(origValue instanceof Date) {
-                return '@__D-' + UID + '-' + (dates.push(origValue) - 1) + '__@';
-            }
-
-            if(origValue instanceof Map) {
-                return '@__M-' + UID + '-' + (maps.push(origValue) - 1) + '__@';
-            }
-
-            if(origValue instanceof Set) {
-                return '@__S-' + UID + '-' + (sets.push(origValue) - 1) + '__@';
-            }
-
-            if(origValue instanceof Array) {
-                var isSparse = origValue.filter(function(){return true}).length !== origValue.length;
-                if (isSparse) {
-                    return '@__A-' + UID + '-' + (arrays.push(origValue) - 1) + '__@';
-                }
-            }
-
-            if(origValue instanceof URL) {
-                return '@__L-' + UID + '-' + (urls.push(origValue) - 1) + '__@';
-            }
-        }
-
-        if (type === 'function') {
-            return '@__F-' + UID + '-' + (functions.push(origValue) - 1) + '__@';
-        }
-
-        if (type === 'undefined') {
-            return '@__U-' + UID + '-' + (undefs.push(origValue) - 1) + '__@';
-        }
-
-        if (type === 'number' && !isNaN(origValue) && !isFinite(origValue)) {
-            return '@__I-' + UID + '-' + (infinities.push(origValue) - 1) + '__@';
-        }
-
-        if (type === 'bigint') {
-            return '@__B-' + UID + '-' + (bigInts.push(origValue) - 1) + '__@';
-        }
-
-        return value;
-    }
-
-    function serializeFunc(fn) {
-      var serializedFn = fn.toString();
-      if (IS_NATIVE_CODE_REGEXP.test(serializedFn)) {
-          throw new TypeError('Serializing native function: ' + fn.name);
-      }
-
-      // pure functions, example: {key: function() {}}
-      if(IS_PURE_FUNCTION.test(serializedFn)) {
-          return serializedFn;
-      }
-
-      // arrow functions, example: arg1 => arg1+5
-      if(IS_ARROW_FUNCTION.test(serializedFn)) {
-          return serializedFn;
-      }
-
-      var argsStartsAt = serializedFn.indexOf('(');
-      var def = serializedFn.substr(0, argsStartsAt)
-        .trim()
-        .split(' ')
-        .filter(function(val) { return val.length > 0 });
-
-      var nonReservedSymbols = def.filter(function(val) {
-        return RESERVED_SYMBOLS.indexOf(val) === -1
-      });
-
-      // enhanced literal objects, example: {key() {}}
-      if(nonReservedSymbols.length > 0) {
-          return (def.indexOf('async') > -1 ? 'async ' : '') + 'function'
-            + (def.join('').indexOf('*') > -1 ? '*' : '')
-            + serializedFn.substr(argsStartsAt);
-      }
-
-      // arrow functions
-      return serializedFn;
-    }
-
-    // Check if the parameter is function
-    if (options.ignoreFunction && typeof obj === "function") {
-        obj = undefined;
-    }
-    // Protects against `JSON.stringify()` returning `undefined`, by serializing
-    // to the literal string: "undefined".
-    if (obj === undefined) {
-        return String(obj);
-    }
-
-    var str;
-
-    // Creates a JSON string representation of the value.
-    // NOTE: Node 0.12 goes into slow mode with extra JSON.stringify() args.
-    if (options.isJSON && !options.space) {
-        str = JSON.stringify(obj);
-    } else {
-        str = JSON.stringify(obj, options.isJSON ? null : replacer, options.space);
-    }
-
-    // Protects against `JSON.stringify()` returning `undefined`, by serializing
-    // to the literal string: "undefined".
-    if (typeof str !== 'string') {
-        return String(str);
-    }
-
-    // Replace unsafe HTML and invalid JavaScript line terminator chars with
-    // their safe Unicode char counterpart. This _must_ happen before the
-    // regexps and functions are serialized and added back to the string.
-    if (options.unsafe !== true) {
-        str = str.replace(UNSAFE_CHARS_REGEXP, escapeUnsafeChars);
-    }
-
-    if (functions.length === 0 && regexps.length === 0 && dates.length === 0 && maps.length === 0 && sets.length === 0 && arrays.length === 0 && undefs.length === 0 && infinities.length === 0 && bigInts.length === 0 && urls.length === 0) {
-        return str;
-    }
-
-    // Replaces all occurrences of function, regexp, date, map and set placeholders in the
-    // JSON string with their string representations. If the original value can
-    // not be found, then `undefined` is used.
-    return str.replace(PLACE_HOLDER_REGEXP, function (match, backSlash, type, valueIndex) {
-        // The placeholder may not be preceded by a backslash. This is to prevent
-        // replacing things like `"a\"@__R-<UID>-0__@"` and thus outputting
-        // invalid JS.
-        if (backSlash) {
-            return match;
-        }
-
-        if (type === 'D') {
-            return "new Date(\"" + dates[valueIndex].toISOString() + "\")";
-        }
-
-        if (type === 'R') {
-            return "new RegExp(" + serialize(regexps[valueIndex].source) + ", \"" + regexps[valueIndex].flags + "\")";
-        }
-
-        if (type === 'M') {
-            return "new Map(" + serialize(Array.from(maps[valueIndex].entries()), options) + ")";
-        }
-
-        if (type === 'S') {
-            return "new Set(" + serialize(Array.from(sets[valueIndex].values()), options) + ")";
-        }
-
-        if (type === 'A') {
-            return "Array.prototype.slice.call(" + serialize(Object.assign({ length: arrays[valueIndex].length }, arrays[valueIndex]), options) + ")";
-        }
-
-        if (type === 'U') {
-            return 'undefined'
-        }
-
-        if (type === 'I') {
-            return infinities[valueIndex];
-        }
-
-        if (type === 'B') {
-            return "BigInt(\"" + bigInts[valueIndex] + "\")";
-        }
-
-        if (type === 'L') {
-            return "new URL(\"" + urls[valueIndex].toString() + "\")"; 
-        }
-
-        var fn = functions[valueIndex];
-
-        return serializeFunc(fn);
-    });
-}
-
-},{"randombytes":145}],159:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":145,"./lib/_stream_passthrough.js":146,"./lib/_stream_readable.js":147,"./lib/_stream_transform.js":148,"./lib/_stream_writable.js":149}],156:[function(require,module,exports){
 
 //force to a valid range
 var range = exports.range = function (obj) {
@@ -23224,7 +22898,7 @@ var satifies = exports.satisfies = function (key, range) {
 
 
 
-},{}],160:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 (function (Buffer){(function (){
 /**
  * Convert a typed array to a Buffer without a copy
@@ -23247,7 +22921,7 @@ module.exports = function (arr) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":4}],161:[function(require,module,exports){
+},{"buffer":4}],158:[function(require,module,exports){
 var undefined = (void 0); // Paranoia
 
 // Beyond this value, index getters/setters (i.e. array[0], array[1]) are so slow to
@@ -23879,9 +23553,9 @@ function packF32(v) { return packIEEE754(v, 8, 23); }
 
 }());
 
-},{}],162:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 arguments[4][44][0].apply(exports,arguments)
-},{"dup":44}],163:[function(require,module,exports){
+},{"dup":44}],160:[function(require,module,exports){
 // Returns a wrapper function that returns a wrapped callback
 // The wrapper function should do some stuff, and return a
 // presumably different callback function.
@@ -23916,19 +23590,20 @@ function wrappy (fn, cb) {
   }
 }
 
-},{}],164:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 exports.elements = {
   counterParagraph: document.getElementById('count-of-questions'),
   questionParagraph: document.getElementById('question-text'),
   optionsList: document.getElementById('options-list'),
+  scoreParagraph: document.getElementById('score'),
   btnStartQuiz: document.getElementById('start-quiz'),
   btnPrevQuestion: document.getElementById('prev-question'),
   btnNextQuestion: document.getElementById('next-question'),
   btnFinishQuiz: document.getElementById('finish-quiz'),
+  btnTryAgain: document.getElementById('try-again'),
 };
 
-},{}],165:[function(require,module,exports){
-const serialize = require('serialize-javascript');
+},{}],162:[function(require,module,exports){
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
 const Question = require('./question');
@@ -23954,17 +23629,28 @@ const getQuestionsFromFile = async (fileName) => {
   return array;
 };
 
-const updateCounterParagraph = (paragraph, count, current) => {
-  paragraph.textContent = `Question ${current + 1} of ${count}`;
-};
-
 (async () => {
   questions = await getQuestionsFromFile('questions.txt');
 })();
 
+const updateCounterParagraph = (paragraph, count = 0, current = 0) => {
+  if (count === 0 && current === 0) paragraph.textContent = '';
+  else paragraph.textContent = `Question ${current + 1} of ${count}`;
+};
+
+const printScore = (paragraph, clear = false) => {
+  if (clear) paragraph.textContent = '';
+  else paragraph.textContent = `Your score: ${score} of ${questions.length}`;
+};
+
 // event listeners
 
 const startQuiz = () => {
+  currentQuestion = 0;
+  for (let i = 0; i < questions.length; i++) {
+    questions[i].clearSelected();
+  }
+
   updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
   elements.btnStartQuiz.hidden = true;
   elements.btnPrevQuestion.hidden = false;
@@ -24019,15 +23705,30 @@ const finishQuiz = () => {
     score += questions[i].checkAnswers();
   }
 
+  questions[currentQuestion].deleteQuestion(elements.questionParagraph);
+  updateCounterParagraph(elements.counterParagraph);
+  printScore(elements.scoreParagraph);
+
+  elements.btnPrevQuestion.hidden = true;
+  elements.btnFinishQuiz.hidden = true;
+  elements.btnTryAgain.hidden = false;
+
   console.log(score);
+};
+
+const tryAgain = () => {
+  printScore(elements.scoreParagraph, true);
+  elements.btnTryAgain.hidden = true;
+  startQuiz();
 };
 
 elements.btnStartQuiz.onclick = startQuiz;
 elements.btnNextQuestion.onclick = nextQuestion;
 elements.btnPrevQuestion.onclick = prevQuestion;
 elements.btnFinishQuiz.onclick = finishQuiz;
+elements.btnTryAgain.onclick = tryAgain;
 
-},{"../HTMLelements/2_pass_quiz":164,"./question":166,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
+},{"../HTMLelements/2_pass_quiz":161,"./question":163,"browserify-fs":62}],163:[function(require,module,exports){
 module.exports = class {
   constructor(question, options, answers) {
     this.question = question;
@@ -24073,6 +23774,11 @@ module.exports = class {
     return score;
   }
 
+  deleteQuestion(paragraph) {
+    paragraph.textContent = '';
+    this.deleteOptions();
+  }
+
   deleteOptions() {
     let countOfOptions = this.options.length;
     while (countOfOptions > 0) {
@@ -24081,6 +23787,10 @@ module.exports = class {
       countOfOptions--;
     }
   }
+
+  clearSelected() {
+    this.selected = [];
+  }
 };
 
-},{}]},{},[165]);
+},{}]},{},[162]);

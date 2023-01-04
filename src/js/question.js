@@ -43,6 +43,11 @@ module.exports = class {
     return score;
   }
 
+  deleteQuestion(paragraph) {
+    paragraph.textContent = '';
+    this.deleteOptions();
+  }
+
   deleteOptions() {
     let countOfOptions = this.options.length;
     while (countOfOptions > 0) {
@@ -50,5 +55,9 @@ module.exports = class {
       item.remove();
       countOfOptions--;
     }
+  }
+
+  clearSelected() {
+    this.selected = [];
   }
 };
