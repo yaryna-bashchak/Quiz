@@ -32,7 +32,16 @@ module.exports = class {
     console.log(this);
   }
 
-  checkAnswers() {}
+  checkAnswers() {
+    let rightAnswers = 0;
+    let wrongAnswers = 0;
+    for (let i = 0; i < this.selected.length; i++) {
+      if (this.answers.includes(this.selected[i])) rightAnswers++;
+      else wrongAnswers++;
+    }
+    const score = rightAnswers / (this.answers.length + wrongAnswers);
+    return score;
+  }
 
   deleteOptions() {
     let countOfOptions = this.options.length;
