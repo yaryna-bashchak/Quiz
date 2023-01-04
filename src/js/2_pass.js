@@ -40,6 +40,11 @@ const printScore = (paragraph, clear = false) => {
 // event listeners
 
 const startQuiz = () => {
+  currentQuestion = 0;
+  for (let i = 0; i < questions.length; i++) {
+    questions[i].clearSelected();
+  }
+
   updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
   elements.btnStartQuiz.hidden = true;
   elements.btnPrevQuestion.hidden = false;
@@ -94,10 +99,25 @@ const finishQuiz = () => {
     score += questions[i].checkAnswers();
   }
 
+  questions[currentQuestion].deleteQuestion(elements.questionParagraph);
+  updateCounterParagraph(elements.counterParagraph);
+  printScore(elements.scoreParagraph);
+
+  elements.btnPrevQuestion.hidden = true;
+  elements.btnFinishQuiz.hidden = true;
+  elements.btnTryAgain.hidden = false;
+
   console.log(score);
+};
+
+const tryAgain = () => {
+  printScore(elements.scoreParagraph, true);
+  elements.btnTryAgain.hidden = true;
+  startQuiz();
 };
 
 elements.btnStartQuiz.onclick = startQuiz;
 elements.btnNextQuestion.onclick = nextQuestion;
 elements.btnPrevQuestion.onclick = prevQuestion;
 elements.btnFinishQuiz.onclick = finishQuiz;
+elements.btnTryAgain.onclick = tryAgain;

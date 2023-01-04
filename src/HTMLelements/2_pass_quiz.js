@@ -7,4 +7,5 @@ exports.elements = {
   btnPrevQuestion: document.getElementById('prev-question'),
   btnNextQuestion: document.getElementById('next-question'),
   btnFinishQuiz: document.getElementById('finish-quiz'),
+  btnTryAgain: document.getElementById('try-again'),
 };
