@@ -23942,7 +23942,6 @@ const setQuizesInFile = (fileName, text) => {
 };
 
 let optionCounter = 1;
-//const questions = [];
 const quiz = new Quiz([]);
 const minCountOfOptions = 1;
 const maxCountOfOptions = 5;

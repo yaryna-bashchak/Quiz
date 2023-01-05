@@ -5,9 +5,12 @@ module.exports = class {
   }
 
   countScore() {
+    this.score = 0;
+
     for (let i = 0; i < this.questions.length; i++) {
       this.score += this.questions[i].checkAnswers();
     }
+
     return this.score;
   }
 };

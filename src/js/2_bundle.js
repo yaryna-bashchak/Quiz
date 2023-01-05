@@ -23611,7 +23611,6 @@ const Quiz = require('./quiz');
 
 // values
 let currentQuestion = 0;
-let questions = [];
 let quiz;
 let score;
 
@@ -23702,12 +23701,9 @@ const prevQuestion = () => {
 };
 
 const finishQuiz = () => {
-  score = 0;
   quiz.questions[currentQuestion].rememberAnswer(elements.optionsList);
 
-  for (let i = 0; i < quiz.questions.length; i++) {
-    score += quiz.questions[i].checkAnswers();
-  }
+  score = quiz.countScore();
 
   quiz.questions[currentQuestion].deleteQuestion(elements.questionParagraph);
   updateCounterParagraph(elements.counterParagraph);
@@ -23805,9 +23801,12 @@ module.exports = class {
   }
 
   countScore() {
+    this.score = 0;
+
     for (let i = 0; i < this.questions.length; i++) {
       this.score += this.questions[i].checkAnswers();
     }
+
     return this.score;
   }
 };
