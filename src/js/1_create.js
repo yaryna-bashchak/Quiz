@@ -2,8 +2,9 @@ const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/1_create_quiz');
 const Question = require('./question');
+const Quiz = require('./quiz');
 
-const setQuestionsInFile = (fileName, text) => {
+const setQuizesInFile = (fileName, text) => {
   fs.writeFile(fileName, text, { flag: 'a+' }, (err) => {
     if (err) throw err;
     fs.readFile(fileName, 'utf8', (error, data) => {
@@ -13,11 +14,12 @@ const setQuestionsInFile = (fileName, text) => {
 };
 
 let optionCounter = 1;
-const questions = [];
+//const questions = [];
+const quiz = new Quiz([]);
 const minCountOfOptions = 1;
 const maxCountOfOptions = 5;
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
-questions.push(question1);
+quiz.questions.push(question1);
 
 // event listeners
 
@@ -65,9 +67,9 @@ const endQuestion = () => {
 
   const question = new Question(questionText, options, answers);
 
-  questions.push(question);
-  const text = serialize(questions);
-  setQuestionsInFile('questions.txt', text);
+  quiz.questions.push(question);
+  const text = serialize(quiz);
+  setQuizesInFile('quizes.txt', text);
 
   const form = document.getElementById('question-form');
   form.reset();

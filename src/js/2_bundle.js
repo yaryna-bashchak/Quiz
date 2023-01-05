@@ -23607,30 +23607,33 @@ exports.elements = {
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
 const Question = require('./question');
+const Quiz = require('./quiz');
 
 // values
 let currentQuestion = 0;
 let questions = [];
+let quiz;
 let score;
 
 // eslint-disable-next-line no-eval
 const deserialize = (text) => eval(`(${text})`);
 
-const getQuestionsFromFile = async (fileName) => {
+const getQuizesFrowFile = async (fileName) => {
   const array = [];
   await fs.readFile(fileName, 'utf8', (error, data) => {
     const deserializedData = deserialize(data);
-    deserializedData.forEach((elem) => {
+    console.log(deserializedData);
+    deserializedData.questions.forEach((elem) => {
       const question = new Question(elem.question, elem.options, elem.answers);
       array.push(question);
     });
   });
 
-  return array;
+  return new Quiz(array);
 };
 
 (async () => {
-  questions = await getQuestionsFromFile('questions.txt');
+  quiz = await getQuizesFrowFile('quizes.txt');
 })();
 
 const updateCounterParagraph = (paragraph, count = 0, current = 0) => {
@@ -23640,38 +23643,39 @@ const updateCounterParagraph = (paragraph, count = 0, current = 0) => {
 
 const printScore = (paragraph, clear = false) => {
   if (clear) paragraph.textContent = '';
-  else paragraph.textContent = `Your score: ${score} of ${questions.length}`;
+  else paragraph.textContent = `Your score: ${score} of ${quiz.questions.length}`;
 };
 
 // event listeners
 
 const startQuiz = () => {
   currentQuestion = 0;
-  for (let i = 0; i < questions.length; i++) {
-    questions[i].clearSelected();
+  for (let i = 0; i < quiz.questions.length; i++) {
+    quiz.questions[i].clearSelected();
   }
 
-  updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
+  updateCounterParagraph(elements.counterParagraph, quiz.questions.length, currentQuestion);
   elements.btnStartQuiz.hidden = true;
+  elements.btnPrevQuestion.disabled = true;
   elements.btnPrevQuestion.hidden = false;
 
-  if (questions.length > 1) elements.btnNextQuestion.hidden = false;
+  if (quiz.questions.length > 1) elements.btnNextQuestion.hidden = false;
   else elements.btnFinishQuiz.hidden = false;
 
-  questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+  quiz.questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
 };
 
 const nextQuestion = () => {
-  questions[currentQuestion].rememberAnswer(elements.optionsList);
+  quiz.questions[currentQuestion].rememberAnswer(elements.optionsList);
 
-  if (currentQuestion + 1 < questions.length) {
-    questions[currentQuestion].deleteOptions();
+  if (currentQuestion + 1 < quiz.questions.length) {
+    quiz.questions[currentQuestion].deleteOptions();
     currentQuestion++;
-    updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
-    questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+    updateCounterParagraph(elements.counterParagraph, quiz.questions.length, currentQuestion);
+    quiz.questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
 
-  if (currentQuestion + 1 >= questions.length) {
+  if (currentQuestion + 1 >= quiz.questions.length) {
     elements.btnNextQuestion.hidden = true;
     elements.btnFinishQuiz.hidden = false;
   }
@@ -23680,16 +23684,16 @@ const nextQuestion = () => {
 };
 
 const prevQuestion = () => {
-  questions[currentQuestion].rememberAnswer(elements.optionsList);
+  quiz.questions[currentQuestion].rememberAnswer(elements.optionsList);
 
   if (currentQuestion > 0) {
-    questions[currentQuestion].deleteOptions();
+    quiz.questions[currentQuestion].deleteOptions();
     currentQuestion--;
-    updateCounterParagraph(elements.counterParagraph, questions.length, currentQuestion);
-    questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+    updateCounterParagraph(elements.counterParagraph, quiz.questions.length, currentQuestion);
+    quiz.questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
   }
 
-  if (currentQuestion + 1 < questions.length) {
+  if (currentQuestion + 1 < quiz.questions.length) {
     elements.btnFinishQuiz.hidden = true;
     elements.btnNextQuestion.hidden = false;
   }
@@ -23699,13 +23703,13 @@ const prevQuestion = () => {
 
 const finishQuiz = () => {
   score = 0;
-  questions[currentQuestion].rememberAnswer(elements.optionsList);
+  quiz.questions[currentQuestion].rememberAnswer(elements.optionsList);
 
-  for (let i = 0; i < questions.length; i++) {
-    score += questions[i].checkAnswers();
+  for (let i = 0; i < quiz.questions.length; i++) {
+    score += quiz.questions[i].checkAnswers();
   }
 
-  questions[currentQuestion].deleteQuestion(elements.questionParagraph);
+  quiz.questions[currentQuestion].deleteQuestion(elements.questionParagraph);
   updateCounterParagraph(elements.counterParagraph);
   printScore(elements.scoreParagraph);
 
@@ -23728,7 +23732,7 @@ elements.btnPrevQuestion.onclick = prevQuestion;
 elements.btnFinishQuiz.onclick = finishQuiz;
 elements.btnTryAgain.onclick = tryAgain;
 
-},{"../HTMLelements/2_pass_quiz":161,"./question":163,"browserify-fs":62}],163:[function(require,module,exports){
+},{"../HTMLelements/2_pass_quiz":161,"./question":163,"./quiz":164,"browserify-fs":62}],163:[function(require,module,exports){
 module.exports = class {
   constructor(question, options, answers) {
     this.question = question;
@@ -23790,6 +23794,21 @@ module.exports = class {
 
   clearSelected() {
     this.selected = [];
+  }
+};
+
+},{}],164:[function(require,module,exports){
+module.exports = class {
+  constructor(questions) {
+    this.questions = questions;
+    this.score = 0;
+  }
+
+  countScore() {
+    for (let i = 0; i < this.questions.length; i++) {
+      this.score += this.questions[i].checkAnswers();
+    }
+    return this.score;
   }
 };
 

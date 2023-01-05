@@ -9453,8 +9453,8 @@ module.exports.AbstractLevelDOWN    = AbstractLevelDOWN
 module.exports.AbstractIterator     = AbstractIterator
 module.exports.AbstractChainedBatch = AbstractChainedBatch
 
-}).call(this)}).call(this,{"isBuffer":require("../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")},require('_process'))
-},{"../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20,"./abstract-chained-batch":49,"./abstract-iterator":50,"_process":25,"xtend":52}],52:[function(require,module,exports){
+}).call(this)}).call(this,{"isBuffer":require("../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")},require('_process'))
+},{"../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20,"./abstract-chained-batch":49,"./abstract-iterator":50,"_process":25,"xtend":52}],52:[function(require,module,exports){
 module.exports = extend
 
 function extend() {
@@ -12200,8 +12200,8 @@ DeferredLevelDOWN.prototype._iterator = function () {
 
 module.exports = DeferredLevelDOWN
 
-}).call(this)}).call(this,{"isBuffer":require("../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")},require('_process'))
-},{"../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20,"_process":25,"abstract-leveldown":51,"util":47}],68:[function(require,module,exports){
+}).call(this)}).call(this,{"isBuffer":require("../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")},require('_process'))
+},{"../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20,"_process":25,"abstract-leveldown":51,"util":47}],68:[function(require,module,exports){
 var prr = require('prr')
 
 function init (type, message, cause) {
@@ -20384,8 +20384,8 @@ exports.filter = function (range, compare) {
 
 
 
-}).call(this)}).call(this,{"isBuffer":require("../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20}],141:[function(require,module,exports){
+}).call(this)}).call(this,{"isBuffer":require("../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js")})
+},{"../../../../../../../AppData/Roaming/npm/node_modules/browserify/node_modules/is-buffer/index.js":20}],141:[function(require,module,exports){
 module.exports = function (num, base) {
   return parseInt(num.toString(), base || 8)
 }
@@ -23930,8 +23930,9 @@ const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/1_create_quiz');
 const Question = require('./question');
+const Quiz = require('./quiz');
 
-const setQuestionsInFile = (fileName, text) => {
+const setQuizesInFile = (fileName, text) => {
   fs.writeFile(fileName, text, { flag: 'a+' }, (err) => {
     if (err) throw err;
     fs.readFile(fileName, 'utf8', (error, data) => {
@@ -23941,11 +23942,12 @@ const setQuestionsInFile = (fileName, text) => {
 };
 
 let optionCounter = 1;
-const questions = [];
+//const questions = [];
+const quiz = new Quiz([]);
 const minCountOfOptions = 1;
 const maxCountOfOptions = 5;
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
-questions.push(question1);
+quiz.questions.push(question1);
 
 // event listeners
 
@@ -23993,9 +23995,9 @@ const endQuestion = () => {
 
   const question = new Question(questionText, options, answers);
 
-  questions.push(question);
-  const text = serialize(questions);
-  setQuestionsInFile('questions.txt', text);
+  quiz.questions.push(question);
+  const text = serialize(quiz);
+  setQuizesInFile('quizes.txt', text);
 
   const form = document.getElementById('question-form');
   form.reset();
@@ -24007,12 +24009,13 @@ elements.btnAddOption.onclick = addOption;
 elements.btnReset.onclick = deleteAllOptions;
 elements.btnAddQuestion.onclick = endQuestion;
 
-},{"../HTMLelements/1_create_quiz":164,"./question":166,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
+},{"../HTMLelements/1_create_quiz":164,"./question":166,"./quiz":167,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
 module.exports = class {
   constructor(question, options, answers) {
     this.question = question;
     this.options = options;
     this.answers = answers;
+    this.selected = [];
   }
 
   printQuestion(paragraph, list) {
@@ -24024,14 +24027,38 @@ module.exports = class {
     for (let i = 0; i < this.options.length; i++) {
       const item = document.createElement('li');
       item.setAttribute('id', `item${i + 1}`);
+      const isSelected = this.selected.some((x) => x === this.options[i]);
       item.innerHTML = `
-        <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]}>
+        <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
         <label class="form-check-label">${this.options[i]}</label></il><br>`;
       list.appendChild(item);
     }
   }
 
-  checkAnswer() {}
+  rememberAnswer(list) {
+    const radioElements = list.querySelectorAll('.radio');
+    this.selected = [];
+    for (let i = 0; i < this.options.length; i++) {
+      if (radioElements[i].checked) this.selected.push(this.options[i]);
+    }
+    console.log(this);
+  }
+
+  checkAnswers() {
+    let rightAnswers = 0;
+    let wrongAnswers = 0;
+    for (let i = 0; i < this.selected.length; i++) {
+      if (this.answers.includes(this.selected[i])) rightAnswers++;
+      else wrongAnswers++;
+    }
+    const score = rightAnswers / (this.answers.length + wrongAnswers);
+    return score;
+  }
+
+  deleteQuestion(paragraph) {
+    paragraph.textContent = '';
+    this.deleteOptions();
+  }
 
   deleteOptions() {
     let countOfOptions = this.options.length;
@@ -24040,6 +24067,25 @@ module.exports = class {
       item.remove();
       countOfOptions--;
     }
+  }
+
+  clearSelected() {
+    this.selected = [];
+  }
+};
+
+},{}],167:[function(require,module,exports){
+module.exports = class {
+  constructor(questions) {
+    this.questions = questions;
+    this.score = 0;
+  }
+
+  countScore() {
+    for (let i = 0; i < this.questions.length; i++) {
+      this.score += this.questions[i].checkAnswers();
+    }
+    return this.score;
   }
 };
 
