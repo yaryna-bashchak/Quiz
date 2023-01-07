@@ -23606,7 +23606,7 @@ exports.elements = {
 },{}],162:[function(require,module,exports){
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
-const Question = require('./question');
+const { Question } = require('./question');
 const Quiz = require('./quiz');
 
 // values
@@ -23729,11 +23729,12 @@ elements.btnFinishQuiz.onclick = finishQuiz;
 elements.btnTryAgain.onclick = tryAgain;
 
 },{"../HTMLelements/2_pass_quiz":161,"./question":163,"./quiz":164,"browserify-fs":62}],163:[function(require,module,exports){
-module.exports = class {
-  constructor(question, options, answers) {
+class Question {
+  constructor(question, options, answers, type) {
     this.question = question;
     this.options = options;
     this.answers = answers;
+    this.type = type;
     this.selected = [];
   }
 
@@ -23749,7 +23750,7 @@ module.exports = class {
       const isSelected = this.selected.some((x) => x === this.options[i]);
       item.innerHTML = `
       <label class="form-check-label">
-        <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
+      <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
         ${this.options[i]}
       </label></il><br>`;
       list.appendChild(item);
@@ -23793,7 +23794,9 @@ module.exports = class {
   clearSelected() {
     this.selected = [];
   }
-};
+}
+
+module.exports = { Question };
 
 },{}],164:[function(require,module,exports){
 module.exports = class {

@@ -1,7 +1,7 @@
 const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/1_create_quiz');
-const Question = require('./question');
+const { Question } = require('./question');
 const Quiz = require('./quiz');
 
 const setQuizesInFile = (fileName, text) => {

@@ -1,4 +1,4 @@
-module.exports = class {
+class Question {
   constructor(question, options, answers) {
     this.question = question;
     this.options = options;
@@ -12,17 +12,8 @@ module.exports = class {
   }
 
   printOptions(list) {
-    for (let i = 0; i < this.options.length; i++) {
-      const item = document.createElement('li');
-      item.setAttribute('id', `item${i + 1}`);
-      const isSelected = this.selected.some((x) => x === this.options[i]);
-      item.innerHTML = `
-      <label class="form-check-label">
-        <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
-        ${this.options[i]}
-      </label></il><br>`;
-      list.appendChild(item);
-    }
+    this.list = list;
+    console.log('It\'s parrent method "printOptions"');
   }
 
   rememberAnswer(list) {
@@ -62,4 +53,6 @@ module.exports = class {
   clearSelected() {
     this.selected = [];
   }
-};
+}
+
+module.exports = { Question };

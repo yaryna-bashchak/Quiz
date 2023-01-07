@@ -1,6 +1,6 @@
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
-const Question = require('./question');
+const { Question } = require('./question');
 const Quiz = require('./quiz');
 
 // values

@@ -23932,7 +23932,7 @@ exports.elements = {
 const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/1_create_quiz');
-const Question = require('./question');
+const { Question } = require('./question');
 const Quiz = require('./quiz');
 
 const setQuizesInFile = (fileName, text) => {
@@ -24046,11 +24046,12 @@ elements.btnAddQuestion.onclick = endQuestion;
 elements.typeOfQuestion.onchange = changeTypeOfQuestion;
 
 },{"../HTMLelements/1_create_quiz":164,"./question":166,"./quiz":167,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
-module.exports = class {
-  constructor(question, options, answers) {
+class Question {
+  constructor(question, options, answers, type) {
     this.question = question;
     this.options = options;
     this.answers = answers;
+    this.type = type;
     this.selected = [];
   }
 
@@ -24066,7 +24067,7 @@ module.exports = class {
       const isSelected = this.selected.some((x) => x === this.options[i]);
       item.innerHTML = `
       <label class="form-check-label">
-        <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
+      <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
         ${this.options[i]}
       </label></il><br>`;
       list.appendChild(item);
@@ -24110,7 +24111,9 @@ module.exports = class {
   clearSelected() {
     this.selected = [];
   }
-};
+}
+
+module.exports = { Question };
 
 },{}],167:[function(require,module,exports){
 module.exports = class {
