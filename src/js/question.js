@@ -1,8 +1,9 @@
 class Question {
-  constructor(question, options, answers) {
+  constructor(question, options, answers, type) {
     this.question = question;
     this.options = options;
     this.answers = answers;
+    this.type = type;
     this.selected = [];
   }
 

@@ -1,7 +1,8 @@
 const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/1_create_quiz');
-const { Question } = require('./question');
+const { RadioQuestion } = require('./radio_question');
+const { CheckboxQuestion } = require('./checkbox_question');
 const Quiz = require('./quiz');
 
 const setQuizesInFile = (fileName, text) => {
@@ -18,7 +19,13 @@ const quiz = new Quiz([]);
 const minCountOfOptions = 1;
 const maxCountOfOptions = 5;
 let questionType = 'radio';
-const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], ['6']);
+
+const question1 = {
+  questionText: '2 + 2 * 2 = ?',
+  options: ['4', '8', '6', '0', '2'],
+  answers: '6',
+  questionType: 'radio',
+};
 quiz.questions.push(question1);
 
 // additional functions
@@ -40,15 +47,22 @@ const getOptions = () => {
 };
 
 const getAnswers = (options, type) => {
-  const checkedList = document.querySelectorAll(`input[type=${type}]:checked`);
-
-  const answers = [];
-  // eslint-disable-next-line no-restricted-syntax
-  for (const checked of checkedList) {
-    answers.push(options[checked.value - 1]);
+  if (type === 'radio') {
+    const checked = document.querySelector('input[type=radio]:checked');
+    return options[checked.value - 1];
   }
 
-  return answers;
+  if (type === 'checkbox') {
+    const checkedList = document.querySelectorAll('input[type=checkbox]:checked');
+    const answers = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const checked of checkedList) {
+      answers.push(options[checked.value - 1]);
+    }
+    return answers;
+  }
+
+  return 0;
 };
 
 // event listeners
@@ -96,7 +110,13 @@ const endQuestion = () => {
   const options = getOptions();
   const answers = getAnswers(options, questionType);
 
-  const question = new Question(questionText, options, answers);
+  const question = {
+    questionText,
+    options,
+    answers,
+    questionType,
+  };
+
   quiz.questions.push(question);
 
   const text = serialize(quiz);
