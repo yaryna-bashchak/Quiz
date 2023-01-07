@@ -24004,11 +24004,16 @@ const endQuestion = () => {
     options.push(optionElements[i].value);
   }
 
-  const radioElements = document.querySelectorAll(`.${questionType}`);
+  const checkedList = document.querySelectorAll(`input[type=${questionType}]:checked`);
   const answers = [];
-  for (let i = 0; i < optionCounter; i++) {
-    if (radioElements[i].checked) answers.push(options[i]);
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const checked of checkedList) {
+    answers.push(options[checked.value - 1]);
   }
+  // for (let i = 0; i < optionCounter; i++) {
+  //   if (checkedList[i].checked) answers.push(options[i]);
+  // }
 
   console.log(answers);
 

@@ -52,3 +52,13 @@ button {
   display: flex;
   align-items: center;
 }
+
+.form-select {
+  display: inline-block;
+  width: auto;
+  padding: 5px 50px 5px 15px;
+}
+
+p {
+  margin: 5px;
+}

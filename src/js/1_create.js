@@ -18,7 +18,7 @@ const quiz = new Quiz([]);
 const minCountOfOptions = 1;
 const maxCountOfOptions = 5;
 let questionType = 'radio';
-const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
+const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], ['6']);
 quiz.questions.push(question1);
 
 const updateCounterParagraph = (paragraph, count, current = count) => {
@@ -74,10 +74,11 @@ const endQuestion = () => {
     options.push(optionElements[i].value);
   }
 
-  const radioElements = document.querySelectorAll('.radio');
+  const checkedList = document.querySelectorAll(`input[type=${questionType}]:checked`);
   const answers = [];
-  for (let i = 0; i < optionCounter; i++) {
-    if (radioElements[i].checked) answers.push(options[i]);
+  // eslint-disable-next-line no-restricted-syntax
+  for (const checked of checkedList) {
+    answers.push(options[checked.value - 1]);
   }
 
   const question = new Question(questionText, options, answers);
