@@ -1,6 +1,6 @@
 class Question {
-  constructor(question, options, answers, type) {
-    this.question = question;
+  constructor(questionText, options, answers, type) {
+    this.questionText = questionText;
     this.options = options;
     this.answers = answers;
     this.type = type;
@@ -8,22 +8,8 @@ class Question {
   }
 
   printQuestion(paragraph, list) {
-    paragraph.textContent = `Task: ${this.question}`;
+    paragraph.textContent = `Task: ${this.questionText}`;
     this.printOptions(list);
-  }
-
-  printOptions(list) {
-    this.list = list;
-    console.log('It\'s parrent method "printOptions"');
-  }
-
-  rememberAnswer(list) {
-    const radioElements = list.querySelectorAll('.radio');
-    this.selected = [];
-    for (let i = 0; i < this.options.length; i++) {
-      if (radioElements[i].checked) this.selected.push(this.options[i]);
-    }
-    console.log(this);
   }
 
   checkAnswers() {
@@ -56,4 +42,53 @@ class Question {
   }
 }
 
-module.exports = { Question };
+class RadioQuestion extends Question {
+  rememberAnswer() {
+    const checked = document.querySelector('input[type=radio]:checked');
+    this.selected = [];
+    if (checked) this.selected = checked.value;
+    console.log(this);
+  }
+
+  printOptions(list) {
+    for (let i = 0; i < this.options.length; i++) {
+      const item = document.createElement('li');
+      item.setAttribute('id', `item${i + 1}`);
+      const isSelected = this.selected.some((x) => x === this.options[i]);
+      item.innerHTML = `
+      <label class="form-check-label">
+      <input class="m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
+        ${this.options[i]}
+      </label></il><br>`;
+      list.appendChild(item);
+    }
+  }
+}
+
+class CheckboxQuestion extends Question {
+  rememberAnswer() {
+    const checkedList = document.querySelectorAll('input[type=checkbox]:checked');
+    this.selected = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const checked of checkedList) {
+      this.selected.push(checked.value);
+    }
+    console.log(this);
+  }
+
+  printOptions(list) {
+    for (let i = 0; i < this.options.length; i++) {
+      const item = document.createElement('li');
+      item.setAttribute('id', `item${i + 1}`);
+      const isSelected = this.selected.some((x) => x === this.options[i]);
+      item.innerHTML = `
+      <label class="form-check-label">
+      <input class="m-2 form-check-input" type="checkbox" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
+        ${this.options[i]}
+      </label></il><br>`;
+      list.appendChild(item);
+    }
+  }
+}
+
+module.exports = { RadioQuestion, CheckboxQuestion };

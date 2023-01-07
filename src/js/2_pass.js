@@ -1,10 +1,9 @@
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/2_pass_quiz');
-const { Question } = require('./question');
-const Quiz = require('./quiz');
+const { RadioQuestion, CheckboxQuestion } = require('./question');
+const { Quiz } = require('./quiz');
 
 // values
-let currentQuestion = 0;
 let quiz;
 let score;
 
@@ -17,7 +16,11 @@ const getQuizesFrowFile = async (fileName) => {
     const deserializedData = deserialize(data);
     console.log(deserializedData);
     deserializedData.questions.forEach((elem) => {
-      const question = new Question(elem.question, elem.options, elem.answers);
+      let question;
+      const args = [elem.questionText, elem.options, elem.answers, elem.questionType];
+      if (elem.questionType === 'radio') question = new RadioQuestion(...args);
+      else if (elem.questionType === 'checkbox') question = new CheckboxQuestion(...args);
+      console.log(question);
       array.push(question);
     });
   });
@@ -42,12 +45,13 @@ const printScore = (paragraph, clear = false) => {
 // event listeners
 
 const startQuiz = () => {
-  currentQuestion = 0;
+  quiz.current = 0;
+  quiz.score = 0;
   for (let i = 0; i < quiz.questions.length; i++) {
     quiz.questions[i].clearSelected();
   }
 
-  updateCounterParagraph(elements.counterParagraph, quiz.questions.length, currentQuestion);
+  updateCounterParagraph(elements.counterParagraph, quiz.questions.length, quiz.current);
   elements.btnStartQuiz.hidden = true;
   elements.btnPrevQuestion.disabled = true;
   elements.btnPrevQuestion.hidden = false;
@@ -55,51 +59,51 @@ const startQuiz = () => {
   if (quiz.questions.length > 1) elements.btnNextQuestion.hidden = false;
   else elements.btnFinishQuiz.hidden = false;
 
-  quiz.questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+  quiz.questions[quiz.current].printQuestion(elements.questionParagraph, elements.optionsList);
 };
 
 const nextQuestion = () => {
-  quiz.questions[currentQuestion].rememberAnswer(elements.optionsList);
+  quiz.questions[quiz.current].rememberAnswer();
 
-  if (currentQuestion + 1 < quiz.questions.length) {
-    quiz.questions[currentQuestion].deleteOptions();
-    currentQuestion++;
-    updateCounterParagraph(elements.counterParagraph, quiz.questions.length, currentQuestion);
-    quiz.questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+  if (quiz.current + 1 < quiz.questions.length) {
+    quiz.questions[quiz.current].deleteOptions();
+    quiz.current++;
+    updateCounterParagraph(elements.counterParagraph, quiz.questions.length, quiz.current);
+    quiz.questions[quiz.current].printQuestion(elements.questionParagraph, elements.optionsList);
   }
 
-  if (currentQuestion + 1 >= quiz.questions.length) {
+  if (quiz.current + 1 >= quiz.questions.length) {
     elements.btnNextQuestion.hidden = true;
     elements.btnFinishQuiz.hidden = false;
   }
 
-  if (currentQuestion + 1 > 1) elements.btnPrevQuestion.disabled = false;
+  if (quiz.current + 1 > 1) elements.btnPrevQuestion.disabled = false;
 };
 
 const prevQuestion = () => {
-  quiz.questions[currentQuestion].rememberAnswer(elements.optionsList);
+  quiz.questions[quiz.current].rememberAnswer();
 
-  if (currentQuestion > 0) {
-    quiz.questions[currentQuestion].deleteOptions();
-    currentQuestion--;
-    updateCounterParagraph(elements.counterParagraph, quiz.questions.length, currentQuestion);
-    quiz.questions[currentQuestion].printQuestion(elements.questionParagraph, elements.optionsList);
+  if (quiz.current > 0) {
+    quiz.questions[quiz.current].deleteOptions();
+    quiz.current--;
+    updateCounterParagraph(elements.counterParagraph, quiz.questions.length, quiz.current);
+    quiz.questions[quiz.current].printQuestion(elements.questionParagraph, elements.optionsList);
   }
 
-  if (currentQuestion + 1 < quiz.questions.length) {
+  if (quiz.current + 1 < quiz.questions.length) {
     elements.btnFinishQuiz.hidden = true;
     elements.btnNextQuestion.hidden = false;
   }
 
-  if (currentQuestion + 1 <= 1) elements.btnPrevQuestion.disabled = true;
+  if (quiz.current + 1 <= 1) elements.btnPrevQuestion.disabled = true;
 };
 
 const finishQuiz = () => {
-  quiz.questions[currentQuestion].rememberAnswer(elements.optionsList);
+  quiz.questions[quiz.current].rememberAnswer();
 
   score = quiz.countScore();
 
-  quiz.questions[currentQuestion].deleteQuestion(elements.questionParagraph);
+  quiz.questions[quiz.current].deleteQuestion(elements.questionParagraph);
   updateCounterParagraph(elements.counterParagraph);
   printScore(elements.scoreParagraph);
 

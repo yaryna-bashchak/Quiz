@@ -1,7 +1,8 @@
-module.exports = class {
+class Quiz {
   constructor(questions) {
     this.questions = questions;
     this.score = 0;
+    this.current = 0;
   }
 
   countScore() {
@@ -13,4 +14,6 @@ module.exports = class {
 
     return this.score;
   }
-};
+}
+
+module.exports = { Quiz };
