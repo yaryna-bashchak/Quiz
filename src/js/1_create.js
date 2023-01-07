@@ -1,8 +1,6 @@
 const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/1_create_quiz');
-const { RadioQuestion } = require('./radio_question');
-const { CheckboxQuestion } = require('./checkbox_question');
 const Quiz = require('./quiz');
 
 const setQuizesInFile = (fileName, text) => {
@@ -49,7 +47,7 @@ const getOptions = () => {
 const getAnswers = (options, type) => {
   if (type === 'radio') {
     const checked = document.querySelector('input[type=radio]:checked');
-    return options[checked.value - 1];
+    if (checked) return options[checked.value - 1];
   }
 
   if (type === 'checkbox') {
@@ -125,6 +123,7 @@ const endQuestion = () => {
   updateCounterParagraph(elements.counterParagraph, quiz.questions.length);
 
   elements.form.reset();
+  elements.typeOfQuestion.value = questionType;
   deleteAllOptions();
 };
 

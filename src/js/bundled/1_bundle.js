@@ -23932,8 +23932,6 @@ exports.elements = {
 const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/1_create_quiz');
-const { RadioQuestion } = require('./radio_question');
-const { CheckboxQuestion } = require('./checkbox_question');
 const Quiz = require('./quiz');
 
 const setQuizesInFile = (fileName, text) => {
@@ -23980,7 +23978,7 @@ const getOptions = () => {
 const getAnswers = (options, type) => {
   if (type === 'radio') {
     const checked = document.querySelector('input[type=radio]:checked');
-    return options[checked.value - 1];
+    if (checked) return options[checked.value - 1];
   }
 
   if (type === 'checkbox') {
@@ -24056,6 +24054,7 @@ const endQuestion = () => {
   updateCounterParagraph(elements.counterParagraph, quiz.questions.length);
 
   elements.form.reset();
+  elements.typeOfQuestion.value = questionType;
   deleteAllOptions();
 };
 
@@ -24065,89 +24064,7 @@ elements.btnReset.onclick = deleteAllOptions;
 elements.btnAddQuestion.onclick = endQuestion;
 elements.typeOfQuestion.onchange = changeTypeOfQuestion;
 
-},{"../HTMLelements/1_create_quiz":164,"./checkbox_question":166,"./quiz":168,"./radio_question":169,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
-const { Question } = require('./question');
-
-class CheckboxQuestion extends Question {
-  printOptions(list) {
-    for (let i = 0; i < this.options.length; i++) {
-      const item = document.createElement('li');
-      item.setAttribute('id', `item${i + 1}`);
-      const isSelected = this.selected.some((x) => x === this.options[i]);
-      item.innerHTML = `
-      <label class="form-check-label">
-      <input class="m-2 form-check-input" type="checkbox" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
-        ${this.options[i]}
-      </label></il><br>`;
-      list.appendChild(item);
-    }
-  }
-}
-
-module.exports = { CheckboxQuestion };
-
-},{"./question":167}],167:[function(require,module,exports){
-class Question {
-  constructor(question, options, answers, type) {
-    this.question = question;
-    this.options = options;
-    this.answers = answers;
-    this.type = type;
-    this.selected = [];
-  }
-
-  printQuestion(paragraph, list) {
-    paragraph.textContent = `Task: ${this.question}`;
-    this.printOptions(list);
-  }
-
-  printOptions(list) {
-    this.list = list;
-    console.log('It\'s parrent method "printOptions"');
-  }
-
-  rememberAnswer(list) {
-    const radioElements = list.querySelectorAll('.radio');
-    this.selected = [];
-    for (let i = 0; i < this.options.length; i++) {
-      if (radioElements[i].checked) this.selected.push(this.options[i]);
-    }
-    console.log(this);
-  }
-
-  checkAnswers() {
-    let rightAnswers = 0;
-    let wrongAnswers = 0;
-    for (let i = 0; i < this.selected.length; i++) {
-      if (this.answers.includes(this.selected[i])) rightAnswers++;
-      else wrongAnswers++;
-    }
-    const score = rightAnswers / (this.answers.length + wrongAnswers);
-    return score;
-  }
-
-  deleteQuestion(paragraph) {
-    paragraph.textContent = '';
-    this.deleteOptions();
-  }
-
-  deleteOptions() {
-    let countOfOptions = this.options.length;
-    while (countOfOptions > 0) {
-      const item = document.getElementById(`item${countOfOptions}`);
-      item.remove();
-      countOfOptions--;
-    }
-  }
-
-  clearSelected() {
-    this.selected = [];
-  }
-}
-
-module.exports = { Question };
-
-},{}],168:[function(require,module,exports){
+},{"../HTMLelements/1_create_quiz":164,"./quiz":166,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
 module.exports = class {
   constructor(questions) {
     this.questions = questions;
@@ -24165,25 +24082,4 @@ module.exports = class {
   }
 };
 
-},{}],169:[function(require,module,exports){
-const { Question } = require('./question');
-
-class RadioQuestion extends Question {
-  printOptions(list) {
-    for (let i = 0; i < this.options.length; i++) {
-      const item = document.createElement('li');
-      item.setAttribute('id', `item${i + 1}`);
-      const isSelected = this.selected.some((x) => x === this.options[i]);
-      item.innerHTML = `
-      <label class="form-check-label">
-      <input class="m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
-        ${this.options[i]}
-      </label></il><br>`;
-      list.appendChild(item);
-    }
-  }
-}
-
-module.exports = { RadioQuestion };
-
-},{"./question":167}]},{},[165]);
+},{}]},{},[165]);
