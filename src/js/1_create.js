@@ -20,6 +20,10 @@ const maxCountOfOptions = 5;
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
 quiz.questions.push(question1);
 
+const updateCounterParagraph = (paragraph, count, current = count) => {
+  paragraph.textContent = `Question ${current + 1} of ${count + 1}`;
+};
+
 // event listeners
 
 const addOption = () => {
@@ -69,6 +73,8 @@ const endQuestion = () => {
   quiz.questions.push(question);
   const text = serialize(quiz);
   setQuizesInFile('quizes.txt', text);
+
+  updateCounterParagraph(elements.counterParagraph, quiz.questions.length);
 
   const form = document.getElementById('question-form');
   form.reset();

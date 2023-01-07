@@ -23919,6 +23919,7 @@ function wrappy (fn, cb) {
 },{}],164:[function(require,module,exports){
 exports.elements = {
   optionsList: document.getElementById('options-list'),
+  counterParagraph: document.getElementById('count-of-questions'),
   btnDeleteOption: document.getElementById('delete-option'),
   btnAddOption: document.getElementById('add-option'),
   btnReset: document.getElementById('reset-btn'),
@@ -23947,6 +23948,10 @@ const minCountOfOptions = 1;
 const maxCountOfOptions = 5;
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
 quiz.questions.push(question1);
+
+const updateCounterParagraph = (paragraph, count, current = count) => {
+  paragraph.textContent = `Question ${current + 1} of ${count + 1}`;
+};
 
 // event listeners
 
@@ -23998,6 +24003,8 @@ const endQuestion = () => {
   const text = serialize(quiz);
   setQuizesInFile('quizes.txt', text);
 
+  updateCounterParagraph(elements.counterParagraph, quiz.questions.length);
+
   const form = document.getElementById('question-form');
   form.reset();
   deleteAllOptions();
@@ -24028,8 +24035,10 @@ module.exports = class {
       item.setAttribute('id', `item${i + 1}`);
       const isSelected = this.selected.some((x) => x === this.options[i]);
       item.innerHTML = `
+      <label class="form-check-label">
         <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
-        <label class="form-check-label">${this.options[i]}</label></il><br>`;
+        ${this.options[i]}
+      </label></il><br>`;
       list.appendChild(item);
     }
   }
@@ -24081,9 +24090,12 @@ module.exports = class {
   }
 
   countScore() {
+    this.score = 0;
+
     for (let i = 0; i < this.questions.length; i++) {
       this.score += this.questions[i].checkAnswers();
     }
+
     return this.score;
   }
 };

@@ -17,8 +17,10 @@ module.exports = class {
       item.setAttribute('id', `item${i + 1}`);
       const isSelected = this.selected.some((x) => x === this.options[i]);
       item.innerHTML = `
+      <label class="form-check-label">
         <input class="radio m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
-        <label class="form-check-label">${this.options[i]}</label></il><br>`;
+        ${this.options[i]}
+      </label></il><br>`;
       list.appendChild(item);
     }
   }
