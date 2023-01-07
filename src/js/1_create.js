@@ -17,6 +17,7 @@ let optionCounter = 1;
 const quiz = new Quiz([]);
 const minCountOfOptions = 1;
 const maxCountOfOptions = 5;
+let questionType = 'radio';
 const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
 quiz.questions.push(question1);
 
@@ -26,12 +27,23 @@ const updateCounterParagraph = (paragraph, count, current = count) => {
 
 // event listeners
 
+const changeTypeOfQuestion = () => {
+  const index = elements.typeOfQuestion.selectedIndex;
+  questionType = elements.typeOfQuestion.options[index].value;
+
+  const items = elements.optionsList.children;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const item of items) {
+    item.firstElementChild.type = questionType;
+  }
+};
+
 const addOption = () => {
   if (optionCounter < maxCountOfOptions) {
     optionCounter++;
     const item = document.createElement('li');
     item.setAttribute('id', `item${optionCounter}`);
-    item.innerHTML = `<input class="radio m-2 form-check-input" type="radio" name="answer" value=${optionCounter}>
+    item.innerHTML = `<input class="${questionType} m-2 form-check-input" type="${questionType}" name="answer" value=${optionCounter}>
       <input class="option form-control" type="text" id="option${optionCounter}" placeholder="choice${optionCounter}"></il><br>`;
     elements.optionsList.appendChild(item);
   }
@@ -85,3 +97,4 @@ elements.btnDeleteOption.onclick = deleteOption;
 elements.btnAddOption.onclick = addOption;
 elements.btnReset.onclick = deleteAllOptions;
 elements.btnAddQuestion.onclick = endQuestion;
+elements.typeOfQuestion.onchange = changeTypeOfQuestion;

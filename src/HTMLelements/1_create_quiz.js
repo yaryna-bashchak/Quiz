@@ -5,4 +5,5 @@ exports.elements = {
   btnAddOption: document.getElementById('add-option'),
   btnReset: document.getElementById('reset-btn'),
   btnAddQuestion: document.getElementById('add-question'),
+  typeOfQuestion: document.getElementById('type-of-question'),
 };

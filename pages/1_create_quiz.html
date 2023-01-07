@@ -12,19 +12,23 @@
   <h1>Quiz</h1>
   <div class="workspace" id="workspace">
     <form class="form-group" id="question-form">
-      <div>
-        <p class="lead">Print your question:</p>
-        <input class="form-control" type="text" id="input-question" placeholder="What is 2 + 2 * 2?"><br>
-      </div>
-      <div>
-        <label for="input-choises">Print choises and check the answer:</label>
-      </div>
+      <p class="lead">Print your question:</p>
+      <p id="count-of-questions">Type of question:
+        <select class="form-select" name="type-of-question" id="type-of-question">
+          <option value="radio">radio button</option>
+          <option value="checkbox">checkbox</option>
+        </select>
+      </p>
+      <input class="form-control" type="text" id="input-question" placeholder="What is 2 + 2 * 2?"><br>
+          
+      <label for="input-choises">Print choises and check the answer:</label>
       <ul id="options-list">
         <li id="item1">
-          <input class="radio m-2 form-check-input" type="radio" name="answer" value=1>
+          <input class="m-2 form-check-input" type="radio" name="answer" value=1>
           <input class="option form-control" type="text" id="option1" placeholder="choice1">
         </li>
       </ul>
+      
       <p id="count-of-questions">Question 2 of 2</p>
       <div class="buttons">
         <button class="btn btn-primary" type="button" id="delete-option" disabled="true">Delete last option</button>
