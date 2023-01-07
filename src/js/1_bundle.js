@@ -23925,6 +23925,7 @@ exports.elements = {
   btnReset: document.getElementById('reset-btn'),
   btnAddQuestion: document.getElementById('add-question'),
   typeOfQuestion: document.getElementById('type-of-question'),
+  form: document.getElementById('question-form'),
 };
 
 },{}],165:[function(require,module,exports){
@@ -23948,11 +23949,37 @@ const quiz = new Quiz([]);
 const minCountOfOptions = 1;
 const maxCountOfOptions = 5;
 let questionType = 'radio';
-const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], [6]);
+const question1 = new Question('2 + 2 * 2 = ?', [4, 8, 6, 0, 2], ['6']);
 quiz.questions.push(question1);
+
+// additional functions
 
 const updateCounterParagraph = (paragraph, count, current = count) => {
   paragraph.textContent = `Question ${current + 1} of ${count + 1}`;
+};
+
+const getOptions = () => {
+  const optionElements = document.querySelectorAll('.option');
+
+  const options = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const option of optionElements) {
+    options.push(option.value);
+  }
+
+  return options;
+};
+
+const getAnswers = (options, type) => {
+  const checkedList = document.querySelectorAll(`input[type=${type}]:checked`);
+
+  const answers = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const checked of checkedList) {
+    answers.push(options[checked.value - 1]);
+  }
+
+  return answers;
 };
 
 // event listeners
@@ -23997,36 +24024,18 @@ const deleteAllOptions = () => {
 
 const endQuestion = () => {
   const questionText = document.getElementById('input-question').value;
-
-  const optionElements = document.querySelectorAll('.option');
-  const options = [];
-  for (let i = 0; i < optionCounter; i++) {
-    options.push(optionElements[i].value);
-  }
-
-  const checkedList = document.querySelectorAll(`input[type=${questionType}]:checked`);
-  const answers = [];
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const checked of checkedList) {
-    answers.push(options[checked.value - 1]);
-  }
-  // for (let i = 0; i < optionCounter; i++) {
-  //   if (checkedList[i].checked) answers.push(options[i]);
-  // }
-
-  console.log(answers);
+  const options = getOptions();
+  const answers = getAnswers(options, questionType);
 
   const question = new Question(questionText, options, answers);
-
   quiz.questions.push(question);
+
   const text = serialize(quiz);
   setQuizesInFile('quizes.txt', text);
 
   updateCounterParagraph(elements.counterParagraph, quiz.questions.length);
 
-  const form = document.getElementById('question-form');
-  form.reset();
+  elements.form.reset();
   deleteAllOptions();
 };
 

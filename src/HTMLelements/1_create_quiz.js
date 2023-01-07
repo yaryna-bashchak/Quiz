@@ -6,4 +6,5 @@ exports.elements = {
   btnReset: document.getElementById('reset-btn'),
   btnAddQuestion: document.getElementById('add-question'),
   typeOfQuestion: document.getElementById('type-of-question'),
+  form: document.getElementById('question-form'),
 };
