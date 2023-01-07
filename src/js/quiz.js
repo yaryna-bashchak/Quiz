@@ -12,7 +12,7 @@ class Quiz {
       this.score += this.questions[i].checkAnswers();
     }
 
-    return this.score;
+    return this.score.toFixed(2);
   }
 }
 
