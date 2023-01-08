@@ -7,30 +7,27 @@ const { Quiz } = require('./quiz');
 let quiz;
 let score;
 
-// eslint-disable-next-line no-eval
-const deserialize = (text) => eval(`(${text})`);
-
-const getQuizesFrowFile = async (fileName) => {
+const deserialize = (text) => {
   const array = [];
-  await fs.readFile(fileName, 'utf8', (error, data) => {
-    const deserializedData = deserialize(data);
-    console.log(deserializedData);
-    deserializedData.questions.forEach((elem) => {
-      let question;
-      const args = [elem.questionText, elem.options, elem.answers, elem.questionType];
-      if (elem.questionType === 'radio') question = new RadioQuestion(...args);
-      else if (elem.questionType === 'checkbox') question = new CheckboxQuestion(...args);
-      console.log(question);
-      array.push(question);
-    });
+  // eslint-disable-next-line no-eval
+  const deserializedData = eval(`(${text})`);
+
+  deserializedData.questions.forEach((elem) => {
+    let question;
+    const args = [elem.questionText, elem.options, elem.answers, elem.questionType];
+    if (elem.questionType === 'radio') question = new RadioQuestion(...args);
+    else if (elem.questionType === 'checkbox') question = new CheckboxQuestion(...args);
+    console.log(question);
+    array.push(question);
   });
 
-  return new Quiz(array);
+  return array;
 };
 
-(async () => {
-  quiz = await getQuizesFrowFile('quizes.txt');
-})();
+fs.readFile('quizes.txt', 'utf8', (error, data) => {
+  const array = deserialize(data);
+  quiz = new Quiz(array);
+});
 
 const updateCounterParagraph = (paragraph, count = 0, current = 0) => {
   if (count === 0 && current === 0) paragraph.textContent = '';
