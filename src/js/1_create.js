@@ -60,6 +60,8 @@ const getAnswers = (options, type) => {
   return 0;
 };
 
+// validation
+
 const addWarningClass = (elem) => {
   if (elem.classList.contains('is-invalid')) elem.classList.remove('is-invalid');
 
@@ -71,13 +73,28 @@ const addWarningClass = (elem) => {
   return false;
 };
 
-const validate = (selector) => {
+const isFilled = (selector) => {
   let isValid = true;
 
   const elems = document.querySelectorAll(selector);
   // eslint-disable-next-line no-restricted-syntax
   for (const elem of elems) {
     if (addWarningClass(elem)) isValid = false;
+  }
+
+  return isValid;
+};
+
+const isSmthChecked = (selector) => {
+  let isValid;
+
+  const checkedElements = document.querySelectorAll(`${selector}:checked`);
+  if (checkedElements.length > 0) {
+    elements.inputChoisesParagr.classList.remove('is-invalid');
+    isValid = true;
+  } else {
+    elements.inputChoisesParagr.classList.add('is-invalid');
+    isValid = false;
   }
 
   return isValid;
@@ -124,10 +141,11 @@ const deleteAllOptions = () => {
 };
 
 const endQuestion = () => {
-  const isQuestionValid = validate('#input-question');
-  const isOptionsValid = validate('.option');
+  const isQuestionValid = isFilled('#input-question');
+  const isOptionsValid = isFilled('.option');
+  const isAnswerChecked = isSmthChecked(`input[type=${questionType}]`);
 
-  if (isQuestionValid && isOptionsValid) {
+  if (isQuestionValid && isOptionsValid && isAnswerChecked) {
     const questionText = elements.inputQuestion.value;
     const options = getOptions();
     const answers = getAnswers(options, questionType);
