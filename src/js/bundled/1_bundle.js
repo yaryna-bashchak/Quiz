@@ -24117,6 +24117,15 @@ class Quiz {
     this.current = 0;
   }
 
+  restart() {
+    this.score = 0;
+    this.current = 0;
+
+    for (let i = 0; i < this.questions.length; i++) {
+      this.questions[i].clearSelected();
+    }
+  }
+
   countScore() {
     this.score = 0;
 
@@ -24124,7 +24133,7 @@ class Quiz {
       this.score += this.questions[i].checkAnswers();
     }
 
-    return this.score.toFixed(2);
+    this.score = this.score.toFixed(2);
   }
 }
 

@@ -17,6 +17,8 @@
         "max-classes-per-file": [
             "error",
             { "ignoreExpressions": true, "max": 3 }
-        ]
+        ],
+        "lines-between-class-members": 0,
+        "no-underscore-dangle": "off"
     }
 }

@@ -5,7 +5,6 @@ const { Quiz } = require('./quiz');
 
 // values
 let quiz;
-let score;
 
 const deserialize = (text) => {
   const array = [];
@@ -40,17 +39,13 @@ const updateCounterParagraph = (paragraph, count = 0, current = 0) => {
 
 const printScore = (paragraph, clear = false) => {
   if (clear) paragraph.textContent = '';
-  else paragraph.textContent = `Your score: ${score} of ${quiz.questions.length}`;
+  else paragraph.textContent = `Your score: ${quiz.score} of ${quiz.questions.length}`;
 };
 
 // event listeners
 
 const startQuiz = () => {
-  quiz.current = 0;
-  quiz.score = 0;
-  for (let i = 0; i < quiz.questions.length; i++) {
-    quiz.questions[i].clearSelected();
-  }
+  quiz.restart();
 
   updateCounterParagraph(elements.counterParagraph, quiz.questions.length, quiz.current);
   elements.btnStartQuiz.hidden = true;
@@ -102,7 +97,7 @@ const prevQuestion = () => {
 const finishQuiz = () => {
   quiz.questions[quiz.current].rememberAnswer();
 
-  score = quiz.countScore();
+  quiz.countScore();
 
   quiz.questions[quiz.current].deleteQuestion(elements.questionParagraph);
   updateCounterParagraph(elements.counterParagraph);
