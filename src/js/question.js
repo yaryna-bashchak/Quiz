@@ -1,25 +1,31 @@
 class Question {
+  _questionText;
+  _options;
+  _answers;
+  _type;
+  _selected;
+
   constructor(questionText, options, answers, type) {
-    this.questionText = questionText;
-    this.options = options;
-    this.answers = answers;
-    this.type = type;
-    this.selected = [];
+    this._questionText = questionText;
+    this._options = options;
+    this._answers = answers;
+    this._type = type;
+    this._selected = [];
   }
 
   printQuestion(paragraph, list) {
-    paragraph.textContent = `Task: ${this.questionText}`;
+    paragraph.textContent = `Task: ${this._questionText}`;
     this.printOptions(list);
   }
 
   checkAnswers() {
     let rightAnswers = 0;
     let wrongAnswers = 0;
-    for (let i = 0; i < this.selected.length; i++) {
-      if (this.answers.includes(this.selected[i])) rightAnswers++;
+    for (let i = 0; i < this._selected.length; i++) {
+      if (this._answers.includes(this._selected[i])) rightAnswers++;
       else wrongAnswers++;
     }
-    const score = rightAnswers / (this.answers.length + wrongAnswers);
+    const score = rightAnswers / (this._answers.length + wrongAnswers);
     return score;
   }
 
@@ -29,7 +35,7 @@ class Question {
   }
 
   deleteOptions() {
-    let countOfOptions = this.options.length;
+    let countOfOptions = this._options.length;
     while (countOfOptions > 0) {
       const item = document.getElementById(`item${countOfOptions}`);
       item.remove();
@@ -38,26 +44,26 @@ class Question {
   }
 
   clearSelected() {
-    this.selected = [];
+    this._selected = [];
   }
 }
 
 class RadioQuestion extends Question {
   rememberAnswer() {
     const checked = document.querySelector('input[type=radio]:checked');
-    this.selected = [];
-    if (checked) this.selected = checked.value;
+    this._selected = [];
+    if (checked) this._selected = checked.value;
   }
 
   printOptions(list) {
-    for (let i = 0; i < this.options.length; i++) {
+    for (let i = 0; i < this._options.length; i++) {
       const item = document.createElement('li');
       item.setAttribute('id', `item${i + 1}`);
-      const isSelected = this.selected.some((x) => x === this.options[i]);
+      const isSelected = this._selected.some((x) => x === this._options[i]);
       item.innerHTML = `
       <label class="form-check-label">
-      <input class="m-2 form-check-input" type="radio" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
-        ${this.options[i]}
+      <input class="m-2 form-check-input" type="radio" name="answer" value=${this._options[i]} ${isSelected ? 'checked' : ''}>
+        ${this._options[i]}
       </label></il><br>`;
       list.appendChild(item);
     }
@@ -67,22 +73,22 @@ class RadioQuestion extends Question {
 class CheckboxQuestion extends Question {
   rememberAnswer() {
     const checkedList = document.querySelectorAll('input[type=checkbox]:checked');
-    this.selected = [];
+    this._selected = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const checked of checkedList) {
-      this.selected.push(checked.value);
+      this._selected.push(checked.value);
     }
   }
 
   printOptions(list) {
-    for (let i = 0; i < this.options.length; i++) {
+    for (let i = 0; i < this._options.length; i++) {
       const item = document.createElement('li');
       item.setAttribute('id', `item${i + 1}`);
-      const isSelected = this.selected.some((x) => x === this.options[i]);
+      const isSelected = this._selected.some((x) => x === this._options[i]);
       item.innerHTML = `
       <label class="form-check-label">
-      <input class="m-2 form-check-input" type="checkbox" name="answer" value=${this.options[i]} ${isSelected ? 'checked' : ''}>
-        ${this.options[i]}
+      <input class="m-2 form-check-input" type="checkbox" name="answer" value=${this._options[i]} ${isSelected ? 'checked' : ''}>
+        ${this._options[i]}
       </label></il><br>`;
       list.appendChild(item);
     }
