@@ -23937,9 +23937,6 @@ const Quiz = require('./quiz');
 const setQuizesInFile = (fileName, text) => {
   fs.writeFile(fileName, text, { flag: 'a+' }, (err) => {
     if (err) throw err;
-    fs.readFile(fileName, 'utf8', (error, data) => {
-      console.log(data);
-    });
   });
 };
 
@@ -24065,7 +24062,7 @@ elements.btnAddQuestion.onclick = endQuestion;
 elements.typeOfQuestion.onchange = changeTypeOfQuestion;
 
 },{"../HTMLelements/1_create_quiz":164,"./quiz":166,"browserify-fs":62,"serialize-javascript":158}],166:[function(require,module,exports){
-module.exports = class {
+class Quiz {
   constructor(questions) {
     this.questions = questions;
     this.score = 0;
@@ -24079,8 +24076,10 @@ module.exports = class {
       this.score += this.questions[i].checkAnswers();
     }
 
-    return this.score;
+    return this.score.toFixed(2);
   }
-};
+}
+
+module.exports = { Quiz };
 
 },{}]},{},[165]);

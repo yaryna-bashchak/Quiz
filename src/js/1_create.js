@@ -6,9 +6,6 @@ const Quiz = require('./quiz');
 const setQuizesInFile = (fileName, text) => {
   fs.writeFile(fileName, text, { flag: 'a+' }, (err) => {
     if (err) throw err;
-    fs.readFile(fileName, 'utf8', (error, data) => {
-      console.log(data);
-    });
   });
 };
 

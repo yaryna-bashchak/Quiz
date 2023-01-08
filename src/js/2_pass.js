@@ -17,17 +17,21 @@ const deserialize = (text) => {
     const args = [elem.questionText, elem.options, elem.answers, elem.questionType];
     if (elem.questionType === 'radio') question = new RadioQuestion(...args);
     else if (elem.questionType === 'checkbox') question = new CheckboxQuestion(...args);
-    console.log(question);
     array.push(question);
   });
 
   return array;
 };
 
-fs.readFile('quizes.txt', 'utf8', (error, data) => {
-  const array = deserialize(data);
-  quiz = new Quiz(array);
-});
+const getQuizesFromFile = (filename) => {
+  fs.readFile(filename, 'utf8', (error, data) => {
+    if (error) throw error;
+    const array = deserialize(data);
+    quiz = new Quiz(array);
+  });
+};
+
+getQuizesFromFile('quizes.txt');
 
 const updateCounterParagraph = (paragraph, count = 0, current = 0) => {
   if (count === 0 && current === 0) paragraph.textContent = '';
@@ -107,8 +111,6 @@ const finishQuiz = () => {
   elements.btnPrevQuestion.hidden = true;
   elements.btnFinishQuiz.hidden = true;
   elements.btnTryAgain.hidden = false;
-
-  console.log(score);
 };
 
 const tryAgain = () => {

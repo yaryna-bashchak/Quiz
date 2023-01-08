@@ -47,7 +47,6 @@ class RadioQuestion extends Question {
     const checked = document.querySelector('input[type=radio]:checked');
     this.selected = [];
     if (checked) this.selected = checked.value;
-    console.log(this);
   }
 
   printOptions(list) {
@@ -73,7 +72,6 @@ class CheckboxQuestion extends Question {
     for (const checked of checkedList) {
       this.selected.push(checked.value);
     }
-    console.log(this);
   }
 
   printOptions(list) {
