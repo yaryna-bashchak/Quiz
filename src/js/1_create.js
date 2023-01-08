@@ -1,7 +1,7 @@
 const serialize = require('serialize-javascript');
 const fs = require('browserify-fs');
 const { elements } = require('../HTMLelements/1_create_quiz');
-const Quiz = require('./quiz');
+const { Quiz } = require('./quiz');
 
 const setQuizesInFile = (fileName, text) => {
   fs.writeFile(fileName, text, { flag: 'a+' }, (err) => {
@@ -60,6 +60,29 @@ const getAnswers = (options, type) => {
   return 0;
 };
 
+const addWarningClass = (elem) => {
+  if (elem.classList.contains('is-invalid')) elem.classList.remove('is-invalid');
+
+  if (!elem.value) {
+    elem.classList.add('is-invalid');
+    return true;
+  }
+
+  return false;
+};
+
+const validate = (selector) => {
+  let isValid = true;
+
+  const elems = document.querySelectorAll(selector);
+  // eslint-disable-next-line no-restricted-syntax
+  for (const elem of elems) {
+    if (addWarningClass(elem)) isValid = false;
+  }
+
+  return isValid;
+};
+
 // event listeners
 
 const changeTypeOfQuestion = () => {
@@ -101,27 +124,32 @@ const deleteAllOptions = () => {
 };
 
 const endQuestion = () => {
-  const questionText = document.getElementById('input-question').value;
-  const options = getOptions();
-  const answers = getAnswers(options, questionType);
+  const isQuestionValid = validate('#input-question');
+  const isOptionsValid = validate('.option');
 
-  const question = {
-    questionText,
-    options,
-    answers,
-    questionType,
-  };
+  if (isQuestionValid && isOptionsValid) {
+    const questionText = elements.inputQuestion.value;
+    const options = getOptions();
+    const answers = getAnswers(options, questionType);
 
-  quiz.questions.push(question);
+    const question = {
+      questionText,
+      options,
+      answers,
+      questionType,
+    };
 
-  const text = serialize(quiz);
-  setQuizesInFile('quizes.txt', text);
+    quiz.questions.push(question);
 
-  updateCounterParagraph(elements.counterParagraph, quiz.questions.length);
+    const text = serialize(quiz);
+    setQuizesInFile('quizes.txt', text);
 
-  elements.form.reset();
-  elements.typeOfQuestion.value = questionType;
-  deleteAllOptions();
+    updateCounterParagraph(elements.counterParagraph, quiz.questions.length);
+
+    elements.form.reset();
+    elements.typeOfQuestion.value = questionType;
+    deleteAllOptions();
+  }
 };
 
 elements.btnDeleteOption.onclick = deleteOption;

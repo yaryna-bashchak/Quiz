@@ -1,4 +1,5 @@
 exports.elements = {
+  inputQuestion: document.getElementById('input-question'),
   optionsList: document.getElementById('options-list'),
   counterParagraph: document.getElementById('count-of-questions'),
   btnDeleteOption: document.getElementById('delete-option'),
