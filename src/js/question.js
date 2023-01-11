@@ -59,7 +59,7 @@ class RadioQuestion extends Question {
     for (let i = 0; i < this._options.length; i++) {
       const item = document.createElement('li');
       item.setAttribute('id', `item${i + 1}`);
-      const isSelected = this._selected.some((x) => x === this._options[i]);
+      const isSelected = (this._options[i] === this._selected);
       item.innerHTML = `
       <label class="form-check-label">
       <input class="m-2 form-check-input" type="radio" name="answer" value=${this._options[i]} ${isSelected ? 'checked' : ''}>
