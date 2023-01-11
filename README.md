@@ -29,18 +29,24 @@ quiz
     │   │   style.css
  
 ```
+ 
+---
 
-When the user creates a new quiz, program creates new instance of the <code>class Quiz</code>, which will store array of questions.
+### About project
 
-Each question is also object that stores information about itself and have methods to check answer, display itself, etc. At the moment, here is two child classes (<code>class RadioQuestion</code> and <code>class CheckboxQuestion</code>) inherits from <code>class Question</code>.
+When the user creates a new quiz, program creates new instance of the <code>class **Quiz**</code>, which will store array of questions.
 
-When user finishes creating quiz, serialized data is written to a file. And when user want to pass it, data is read from the file and deserialized. In the future, it is planned to use a database instead.
+Each question is also object that stores information about itself and have methods to check answer, display itself, etc. At the moment, here is two child classes (<code>class **RadioQuestion**</code> and <code>class **CheckboxQuestion**</code>) inherits from <code>class **Question**</code>. The child classes were created to use polymorphism.
+
+When user finishes creating quiz, **serialized data** is written to a **file**. And when user want to pass it (go to 2nd page), data is read from the file and **deserialized**. In the future, it is planned to use a database instead.
+
+Also to make app more visually appealing I use **bootstrap styles**.
 
 ---
 
 ### How to run?
 
-The project is written on JavaScript. So, in order to be able to use <code>require(...)</code>, it is used <code>browserify</code> to write and use Node.js-style modules that compile for use in the browser.
+The project is written on JavaScript. So, in order to be able to use <code>require(...)</code>, it is used <code>**browserify**</code> to write and use Node.js-style modules that compile for use in the browser.
 
 The project is simply run by opening html-file in your browser. Or by opening with Live Server in VS Code which is much better.
 
@@ -73,7 +79,7 @@ As **CREATOR** of quiz you could...
 
 <img src="https://user-images.githubusercontent.com/90560209/211781938-0115f589-2b0b-474d-890d-3e77cf6bafc8.png" alt="image" height="450"/> <img src="https://user-images.githubusercontent.com/90560209/211781960-87a7e9ff-bfe9-4a4a-9ecd-c346d46974ba.png" alt="image" height="450"/>
 
----
+----
 
 As **STUDENT** (or someone else who want to pass the quiz) you could...
 
@@ -93,7 +99,7 @@ As **STUDENT** (or someone else who want to pass the quiz) you could...
 
 <img src="https://user-images.githubusercontent.com/90560209/211801256-fc956e24-55ea-4d7d-97a6-79a4b66e4088.png" alt="image" height="200"/>
 
----
+----
 
 ### Validation
 
@@ -102,7 +108,7 @@ You **must**...
 
 <img src="https://user-images.githubusercontent.com/90560209/211859648-fea33583-04e4-4a10-b4ef-61dfe1852363.png" alt="image" height="450"/>
 
-- choose **fill every existing field** (otherwise a *warning* will appear)
+- **fill every existing field** (otherwise a *warning* will appear)
 
 <img src="https://user-images.githubusercontent.com/90560209/211859810-21de4f0d-bedd-4d32-a7c3-69651a0fc8f6.png" height="450"/>
 
