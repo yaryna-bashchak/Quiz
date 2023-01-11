@@ -36,7 +36,7 @@ quiz
 
 When the user creates a new quiz, program creates new instance of the <code>class **Quiz**</code>, which will store array of questions.
 
-Each question is also object that stores information about itself and have methods to check answer, display itself, etc. At the moment, here is two child classes (<code>class **RadioQuestion**</code> and <code>class **CheckboxQuestion**</code>) inherits from <code>class **Question**</code>. The child classes were created to use polymorphism.
+Each question is also object that stores information about itself and have methods to check answer, display itself, etc. At the moment, here is two child classes (<code>class **RadioQuestion**</code> and <code>class **CheckboxQuestion**</code>) inherits from <code>class **Question**</code>. The child classes were created to use **polymorphism**.
 
 When user finishes creating quiz, **serialized data** is written to a **file**. And when user want to pass it (go to 2nd page), data is read from the file and **deserialized**. In the future, it is planned to use a database instead.
 
