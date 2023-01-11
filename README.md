@@ -15,7 +15,7 @@ quiz
     │   │   1_create.js        - functions for 1st page
     │   │   2_pass.js          - functions for 2nd page
     │   │   quiz.js            - class Quiz
-    │   │   question.js        - class Question and its child classes: RadioQuestion, CheckboxQuestion
+    │   │   question.js        - class Question and its child classes
     │   │   
     │   └───bundled            - here is bundled files created by browserify
     │   │   ...
@@ -29,6 +29,12 @@ quiz
     │   │   style.css
  
 ```
+
+When the user creates a new quiz, program creates new instance of the <code>class Quiz</code>, which will store array of questions.
+
+Each question is also object that stores information about itself and have methods to check answer, display itself, etc. At the moment, here is two child classes (<code>class RadioQuestion</code> and <code>class CheckboxQuestion</code>) inherits from <code>class Question</code>.
+
+When user finishes creating quiz, serialized data is written to a file. And when user want to pass it, data is read from the file and deserialized. In the future, it is planned to use a database instead.
 
 ---
 
