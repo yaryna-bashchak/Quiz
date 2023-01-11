@@ -1,8 +1,34 @@
-# Web App to create and pass QUIZES
+# Web App to create and pass *QUIZES*
 
 ### Project structure
 
-
+```
+quiz   
+│
+└───pages
+│   │   1_create_quiz.html
+│   │   2_pass_quiz.html
+│
+└───src
+    │ 
+    └───js
+    │   │   1_create.js        - functions for 1st page
+    │   │   2_pass.js          - functions for 2nd page
+    │   │   quiz.js            - class Quiz
+    │   │   question.js        - class Question and its child classes: RadioQuestion, CheckboxQuestion
+    │   │   
+    │   └───bundled            - here is bundled files created by browserify
+    │   │   ...
+    │
+    └───HTMLelements           - here is elements from pages getted by id
+    │   │   1_create_quiz.js
+    │   │   2_pass_quiz.js
+    │ 
+    └───styles
+    │   │   bootstrap.min.css
+    │   │   style.css
+ 
+```
 
 ---
 
@@ -25,9 +51,9 @@ Here is the example command:
 
 As **CREATOR** of quiz you could...
 
-- create new quiz and the questions in the format of tests
+- **create new quiz** and the **questions** in the format of tests
 
-<img src="https://user-images.githubusercontent.com/90560209/211778657-ff49957f-7abc-4e6d-b271-dda70a78c744.png" alt="image" height="450"/>
+<img src="https://user-images.githubusercontent.com/90560209/211863610-506e3a1d-6d13-4409-9285-8de98f408b55.png" alt="image" height="450"/><img src="https://user-images.githubusercontent.com/90560209/211778657-ff49957f-7abc-4e6d-b271-dda70a78c744.png" alt="image" height="450"/>
 
 - use buttons below to 
   - **add new** option (max number: 5)
@@ -40,6 +66,8 @@ As **CREATOR** of quiz you could...
 - switch between different **types of question** (now only radiobutton and checkbox are available)
 
 <img src="https://user-images.githubusercontent.com/90560209/211781938-0115f589-2b0b-474d-890d-3e77cf6bafc8.png" alt="image" height="450"/> <img src="https://user-images.githubusercontent.com/90560209/211781960-87a7e9ff-bfe9-4a4a-9ecd-c346d46974ba.png" alt="image" height="450"/>
+
+---
 
 As **STUDENT** (or someone else who want to pass the quiz) you could...
 
@@ -57,7 +85,7 @@ As **STUDENT** (or someone else who want to pass the quiz) you could...
 
 - see your **score** and **try again**
 
-<img src="https://user-images.githubusercontent.com/90560209/211801256-fc956e24-55ea-4d7d-97a6-79a4b66e4088.png" alt="image" height="150"/>
+<img src="https://user-images.githubusercontent.com/90560209/211801256-fc956e24-55ea-4d7d-97a6-79a4b66e4088.png" alt="image" height="200"/>
 
 ---
 
