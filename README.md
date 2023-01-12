@@ -40,7 +40,8 @@ Each question is also object that stores information about itself and have metho
 
 When user finishes creating quiz, **serialized data** is written to a **file**. And when user want to pass it (go to 2nd page), data is read from the file and **deserialized**. In the future, it is planned to use a database instead.
 
-Also to make app more visually appealing I use **bootstrap styles**.
+Also to make app more visually appealing I use [bootstrap styles](https://getbootstrap.com/docs/4.0/getting-started/introduction/).
+
 
 ---
 
