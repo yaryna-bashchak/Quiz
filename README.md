@@ -1,4 +1,4 @@
-# Web App to create and pass *QUIZES*
+# Web App to create and pass *QUIZZES*
 
 ### Project structure
 
